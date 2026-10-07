@@ -121,6 +121,7 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   atc: { name: "ATC", displayTag: null, aliases: ["ATC", "Association of Translation Companies"] },
   tac: { name: "中国翻译协会", displayTag: null, aliases: ["中国翻译协会", "Translators Association of China"] },
   yimelme: { name: "译了么", displayTag: null, aliases: ["译了么"] },
+  fit: { name: "国际译联", displayTag: null, aliases: ["国际译联", "FIT", "International Federation of Translators"] },
 };
 
 /**
@@ -161,6 +162,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "atc", name: "ATC", patterns: [/atc/i] },
   { id: "tac", name: "中国翻译协会", patterns: [/中国翻译协会|translators association of china/i] },
   { id: "yimelme", name: "译了么", patterns: [/译了么/y] },
+  { id: "fit", name: "国际译联", patterns: [/国际译联|fit-ift|FIT|federation of translators/i] },
 ];
 
 /** 这些域名上的文章，发布方就是对应的公司（托管平台如 GitHub、arXiv 不算）。 */
@@ -195,6 +197,7 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "euatc", domains: ["euatc.org"] },
   { entityId: "atc", domains: ["atc.org.uk"] },
   { entityId: "tac", domains: ["tac-online.org.cn"] },
+  { entityId: "fit", domains: ["translatio.fit-ift.org", "fit-ift.org"] },
 ];
 
 /** 原文里的这些写法也算提到了对应公司。 */

@@ -1243,6 +1243,24 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-fit-translatio",
+      "name": "国际译联 FIT Translatio",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://en.translatio.fit-ift.org/feed/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "fit",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "机构",
+        "行业组织"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
