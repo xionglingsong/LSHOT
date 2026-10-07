@@ -114,6 +114,7 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   gtcom: { name: "中译语通", displayTag: null, aliases: ["中译语通", "GTCOM"] },
   transn: { name: "传神语联", displayTag: null, aliases: ["传神", "传神语联", "Transn"] },
   translated: { name: "Translated", displayTag: null, aliases: ["Translated", "ModernMT"], otherNames: ["Translated.com"] },
+  csa: { name: "CSA Research", displayTag: null, aliases: ["CSA Research", "CSA"] },
 };
 
 /**
@@ -147,6 +148,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "gtcom", name: "中译语通", patterns: [/中译语通|gtcom/i] },
   { id: "transn", name: "传神语联", patterns: [/传神|transn/i] },
   { id: "translated", name: "Translated", patterns: [/translated\.com|modernmt/i] },
+  { id: "csa", name: "CSA Research", patterns: [/csa[- ]research/i] },
 ];
 
 /** 这些域名上的文章，发布方就是对应的公司（托管平台如 GitHub、arXiv 不算）。 */
@@ -175,6 +177,7 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "gtcom", domains: ["gtcom.com.cn"] },
   { entityId: "transn", domains: ["transn.com"] },
   { entityId: "translated", domains: ["translated.com"] },
+  { entityId: "csa", domains: ["csa-research.com", "insights.csa-research.com"] },
 ];
 
 /** 原文里的这些写法也算提到了对应公司。 */
