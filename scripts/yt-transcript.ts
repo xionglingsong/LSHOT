@@ -81,7 +81,10 @@ for (const a of arts) {
     if (text.length < 50) { console.log(`  ✗ ${a.title.slice(0, 40)} | 字幕太短`); continue; }
 
     // Inject body
-    await sql`UPDATE articles SET body_text = ${text}, body_status = 'ok' WHERE id = ${a.id}`;
+    const withNote = `【自动字幕转写 · 由 YouTube 自动语音识别生成，可能存在识别错误，专有名词或与原意有出入，仅供参考】
+
+${text}`;
+    await sql`UPDATE articles SET body_text = ${withNote}, body_status = 'ok' WHERE id = ${a.id}`;
     await sql`UPDATE articles SET revision = revision + 1 WHERE id = ${a.id}`;
     await queueProcessing(a.id, { attemptTag: "yt-transcript" });
     console.log(`  ✓ ${a.title.slice(0, 45)} | ${text.length} 字`);
