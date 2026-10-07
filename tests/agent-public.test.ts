@@ -24,7 +24,7 @@ test('Agent discovery uses the configured identity, address and categories', asy
   assert.equal(r.headers['access-control-allow-origin'], '*');
   const cached = await app.inject({url:'/api/v1/agent',headers:{'if-none-match':String(r.headers.etag)}});
   assert.equal(cached.statusCode,304);
-  for (const url of ['/api/v1/agent/latest', '/api/v1/agent/search?q=OpenAI', '/api/v1/agent/hot']) {
+  for (const url of ['/api/v1/agent/latest', '/api/v1/agent/search?q=DeepL', '/api/v1/agent/hot']) {
     const answer = await app.inject(url);
     assert.equal(answer.statusCode, 200, url);
     assert.match(String(answer.headers['cache-control']), /^public/, url);

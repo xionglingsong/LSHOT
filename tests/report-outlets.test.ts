@@ -69,7 +69,7 @@ test('withdrawing a named lead preserves the replacement headline and its own fr
 
 test('a historical written daily lead follows withdrawal of the citation it describes', async (t) => {
   t.mock.timers.enable({ apis: ['Date'], now: Date.now() + 1_200_002 });
-  const removed = await citation('历史模型发布与能力升级');
+  const removed = await citation('历史引擎发布与能力升级');
   const replacement = await citation('新的安全工具发布');
   const key = '2096-01-02';
   await issue('daily', key, { lead: { title: removed.title, leadParagraph: removed.summary }, highlights: [replacement.itemId], sections: [{ label: 'News', items: [removed, replacement] }] });
@@ -178,7 +178,7 @@ for (const [kind, key] of [['daily', '2096-01-06'], ['weekly', '2096-W30'], ['mo
 
 for (const [kind, key] of [['weekly', '2096-W40'], ['monthly', '2096-11']] as const) {
   test(`a historical written ${kind} headline follows withdrawal of its matched citation`, async () => {
-    const removed = await citation(`旧版${kind}模型正式发布`);
+    const removed = await citation(`旧版${kind}引擎正式发布`);
     const replacement = await citation(`替补${kind}安全系统更新`);
     await issue(kind, key, { ...(kind === 'monthly' ? { title: removed.title } : { headline: removed.title }), overview: `总述：${removed.title}`, highlights: [replacement.itemId],
       themes: [{ heading: 'News', storyRefs: [removed, replacement] }] });

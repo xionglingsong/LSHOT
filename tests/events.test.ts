@@ -73,7 +73,7 @@ async function report(suffix: string, title = FACT_TITLE, summary = "摘要", pu
     sourceId: SOURCE, url: `https://example.com/events-${T}-${suffix}`, title: `Model launch ${T} ${suffix}`, bodyText: "A new model.", bodyStatus: "ok", via: "fetch", publishedAt,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected, output)
-            VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${title}, ${summary}, 80, false, ${sql.json({ fact: { title, subject: "测试", action: "发布", object: "模型" } })})`;
+            VALUES (${articleId}, 1, 'rule', 'pass', 'engine', ${title}, ${summary}, 80, false, ${sql.json({ fact: { title, subject: "测试", action: "发布", object: "引擎" } })})`;
   await publishArticle(articleId);
   return articleId;
 }
@@ -350,7 +350,7 @@ test("ROUNDUP answers describe a pair, not the single query's identity; grounded
   const text = randomText();
   await storyWithRoot(text, "roundup-pair-candidate");
   const id = await report("single-roundup-pair", text, text);
-  await setScope(id, "single", { title: text, subject: "测试", action: "发布", object: "模型", evidence: "A new model.", conditions: [{ text: "仅预览用户", quote: "Preview users only." }] });
+  await setScope(id, "single", { title: text, subject: "测试", action: "发布", object: "引擎", evidence: "A new model.", conditions: [{ text: "仅预览用户", quote: "Preview users only." }] });
   relation = "ROUNDUP";
   try {
     const result = await groupArticle(id);

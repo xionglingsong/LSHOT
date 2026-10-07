@@ -9,7 +9,7 @@ import { closeDb, sql } from "@aihot/backend/db";
 import { recallFacts } from "@aihot/backend/events/recall";
 
 const T = `recall-${tag()}`;
-const title = `${T}模型发布全新版本详细说明`;
+const title = `${T}引擎发布全新版本详细说明`;
 after(closeDb);
 
 test("recall preserves window, live-story, membership and latest-analysis evidence", async () => {
