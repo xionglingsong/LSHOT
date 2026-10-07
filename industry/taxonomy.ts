@@ -128,6 +128,9 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   tac: { name: "中国翻译协会", displayTag: null, aliases: ["中国翻译协会", "Translators Association of China"] },
   yimelme: { name: "译了么", displayTag: null, aliases: ["译了么"] },
   fit: { name: "国际译联", displayTag: null, aliases: ["国际译联", "FIT", "International Federation of Translators"] },
+  netflix: { name: "Netflix", displayTag: null, aliases: ["Netflix", "Netflix Tech"] },
+  interprefy: { name: "Interprefy", displayTag: null, aliases: ["Interprefy"] },
+  wordly: { name: "Wordly", displayTag: null, aliases: ["Wordly"] },
 };
 
 /**
@@ -169,6 +172,16 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "tac", name: "中国翻译协会", patterns: [/中国翻译协会|translators association of china/i] },
   { id: "yimelme", name: "译了么", patterns: [/译了么/y] },
   { id: "fit", name: "国际译联", patterns: [/国际译联|fit-ift|FIT|federation of translators/i] },
+  { id: "netflix", name: "Netflix", patterns: [/netflix/i] },
+  { id: "interprefy", name: "Interprefy", patterns: [/interprefy/i] },
+  { id: "wordly", name: "Wordly", patterns: [/\bwordly\b/i] },
+  { id: "audio-desc", name: "Audio Description Community", patterns: [/audio\s+description|口述影像/i] },
+  { id: "avt-research", name: "AVT Research", patterns: [/audiovisual\s+translation|视听翻译|subtitle\s+studies/i] },
+  { id: "speech-interp", name: "Speech Interpretation", patterns: [/speech\s+interpretation|machine\s+interp|AI\s+interp/i] },
+  { id: "deluxe-ent", name: "Deluxe Entertainment", patterns: [/deluxe\s+entertainment/i] },
+  { id: "iyuno-media", name: "Iyuno Media", patterns: [/(iyuno|sditargeting)/i] },
+  { id: "vsi-group", name: "VSI Group", patterns: [/\bvsi\b\s+(group|media)/i] },
+  { id: "esist", name: "ESIST", patterns: [/\besist\b|european.*screen.*translat/i] },
 ];
 
 /** 这些域名上的文章，发布方就是对应的公司（托管平台如 GitHub、arXiv 不算）。 */

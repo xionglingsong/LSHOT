@@ -1333,6 +1333,79 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-netflix-tech",
+      "name": "Netflix Tech Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://netflixtechblog.com/feed"
+      },
+      "tier": "T1",
+      "owner_entity_id": "netflix",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "流媒体"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-google-ai",
+      "name": "Google AI Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.google/technology/ai/rss/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "AI"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-google-research",
+      "name": "Google Research Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://research.google/blog/rss/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-interprefy",
+      "name": "Interprefy · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:interprefy -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": "interprefy",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
