@@ -5,7 +5,7 @@ import { Wordmark } from "@aihot/site/brand/Logo.tsx";
 import { useChangelogSeen } from "../../lib/local-state";
 import { sidebar, sidebarIsActive, type NavItem } from "./nav";
 import { ThemeSwitch } from "./ThemeSwitch";
-import { IconGithub } from "../icons";
+import { IconGithub, IconDouyin, IconXiaohongshu } from "../icons";
 
 /** True while the changelog has an entry newer than the one this reader last opened. */
 export function useChangelogDot(latestVersion: string | null): boolean {
@@ -58,16 +58,24 @@ export function Sidebar({ changelogVersion }: { changelogVersion: string | null 
         ))}
       </nav>
       <div className="mt-2 space-y-2.5 px-1 pt-1">
-        {SITE.github && (
-          <a
-            href={SITE.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mx-1 flex h-[34px] items-center justify-center gap-1.5 rounded-full border border-line text-[12.5px] text-ink-3 transition-colors hover:bg-bg-sunk hover:text-ink"
-          >
-            <IconGithub size={14} />
-            GitHub 开源
-          </a>
+        {(SITE.github || SITE.douyin || SITE.xiaohongshu) && (
+          <div className="mx-1 flex h-[34px] items-center justify-center gap-2.5">
+            {SITE.github && (
+              <a href={SITE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub 开源" title="GitHub 开源" className="flex size-[30px] items-center justify-center rounded-full border border-line text-ink-3 transition-colors hover:bg-bg-sunk hover:text-ink">
+                <IconGithub size={15} />
+              </a>
+            )}
+            {SITE.douyin && (
+              <a href={SITE.douyin} target="_blank" rel="noopener noreferrer" aria-label="抖音" title="抖音" className="flex size-[30px] items-center justify-center rounded-full border border-line text-ink-3 transition-colors hover:bg-bg-sunk hover:text-ink">
+                <IconDouyin size={15} />
+              </a>
+            )}
+            {SITE.xiaohongshu && (
+              <a href={SITE.xiaohongshu} target="_blank" rel="noopener noreferrer" aria-label="小红书" title="小红书" className="flex size-[30px] items-center justify-center rounded-full border border-line text-ink-3 transition-colors hover:bg-bg-sunk hover:text-ink">
+                <IconXiaohongshu size={15} />
+              </a>
+            )}
+          </div>
         )}
         <ThemeSwitch className="mx-1" />
         {SITE.icp && (

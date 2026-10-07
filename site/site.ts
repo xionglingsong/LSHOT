@@ -67,7 +67,11 @@ export const SITE = {
   /** 中国大陆网站的 ICP 备案号（选填），填了就显示在侧栏底部和“我的”页底部，并链接到工信部备案系统。 */
   icp: null as string | null,
   /** 源码的 GitHub 仓库地址（选填），填了就在侧栏底部和“我的”页底部显示“GitHub 开源”。 */
-  github: null as string | null,
+  github: "https://github.com/xionglingsong/LSHOT",
+  /** 抖音主页（引流入口，选填）。 */
+  douyin: "https://www.douyin.com/user/MS4wLjABAAAApfwlcgiVNU9Xn8T-YxMbol8CtYBPxrJqLTfFGm0qU2Y2-liBg-EMxZZeFZkVzI4D",
+  /** 小红书主页（引流入口，选填）。 */
+  xiaohongshu: "https://xhslink.cn/o/9cUQkHaY1X1",
   /** 结构化数据里的网站运营者（搜索引擎用）。 */
   organization: {
     name: "语服热点",

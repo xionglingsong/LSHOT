@@ -29,6 +29,19 @@ export const IconInfo = (p: P) => (<Svg {...p}><circle cx="12" cy="12" r="8.5" /
 export const IconHistory = (p: P) => (<Svg {...p}><path d="M3.5 12a8.5 8.5 0 102.5-6" /><path d="M3.5 4v4h4" /><path d="M12 8v4l2.5 2" /></Svg>);
 export const IconMessage = (p: P) => (<Svg {...p}><path d="M4 5h16v11H9l-5 4z" /></Svg>);
 export const IconSearch = (p: P) => (<Svg {...p}><circle cx="11" cy="11" r="6.5" /><path d="M20 20l-4.2-4.2" /></Svg>);
+/** 抖音音符标志（filled）。 */
+export const IconDouyin = ({ size = 18, ...rest }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...rest}>
+    <path d="M16.9 5.9a4.6 4.6 0 0 1-1.1-2.9h-3.2v12.5a2.5 2.5 0 1 1-2.5-2.5c.3 0 .5 0 .8.1V9.6a6 6 0 0 0-.8-.05A5.77 5.77 0 0 0 4.3 15.3a5.77 5.77 0 0 0 9.8 4.1 5.7 5.7 0 0 0 1.7-4.1V9.3a7.5 7.5 0 0 0 4.4 1.4V7.5a4.6 4.6 0 0 1-3.3-1.6z" />
+  </svg>
+);
+/** 小红书标志（品牌红底）。 */
+export const IconXiaohongshu = ({ size = 18, ...rest }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" {...rest}>
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="#ff2442" />
+    <text x="12" y="16.6" textAnchor="middle" fontSize="12.5" fontWeight="700" fill="#fff" fontFamily="system-ui, -apple-system, sans-serif">书</text>
+  </svg>
+);
 /** The GitHub mark (filled, not stroked). */
 export const IconGithub = ({ size = 18, ...rest }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...rest}>
