@@ -1236,7 +1236,7 @@
       "tier": "T1_5",
       "owner_entity_id": "yimelme",
       "participation_mode": "editorial",
-      "interval_minutes": 240,
+      "interval_minutes": 1440,
       "tags": [
         "官方",
         "公众号"
