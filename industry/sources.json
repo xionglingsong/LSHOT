@@ -348,7 +348,7 @@
         "期刊",
         "学术"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
@@ -369,7 +369,7 @@
         "期刊",
         "学术"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
@@ -390,7 +390,7 @@
         "期刊",
         "学术"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
@@ -411,7 +411,7 @@
         "期刊",
         "学术"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
@@ -432,7 +432,7 @@
         "期刊",
         "学术"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     }
   ]
