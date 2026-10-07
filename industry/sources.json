@@ -1406,6 +1406,234 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-slatorpod",
+      "name": "SlatorPod",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.buzzsprout.com/1198304.rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "行业分析"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-nimdzi-live",
+      "name": "Nimdzi LIVE!",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://feeds.castos.com/6wvjm",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "行业分析"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-localization",
+      "name": "The Localization Podcast",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://anchor.fm/s/c94a014/podcast/rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-brand-interpreter",
+      "name": "Brand the Interpreter",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.buzzsprout.com/839080.rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "口译"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-subject-to-interpretation",
+      "name": "Subject to Interpretation",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.buzzsprout.com/167987.rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "口译"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-translation-confidential",
+      "name": "Translation Confidential",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://anchor.fm/s/c2f4660/podcast/rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-source2target",
+      "name": "Source 2 Target",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.libsyn.com/shows/423245/destinations/3519194.xml",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-troublesome-terps",
+      "name": "Troublesome Terps",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://feeds.fireside.fm/troubleterps/rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "口译"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "pod-conversations",
+      "name": "Conversations: Interpreting & Translating",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.buzzsprout.com/1188758.rss",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "播客",
+        "口译"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "yt-multilingual-tv",
+      "name": "MultiLingual TV",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC_EmVE4tsFCJiKIxSskoMOw",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "YouTube",
+        "行业媒体"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "yt-locworld",
+      "name": "LocWorld",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCEAxskrFPy01kMEw1-yZEbQ",
+        "_aihot": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "YouTube",
+        "大会"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
