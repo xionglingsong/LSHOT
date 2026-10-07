@@ -1,5 +1,5 @@
 {
-  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。 公众号条目（mp_account）需要先在后端 .env 配 DAJIALA_KEY（极致了，按次计费），再在后台“信源”里把每个号的 ghid（公众号原始 ID）补上；极致了后台可按昵称搜到 ghid。未填 ghid 的号停在未配置状态，不产生计费请求。 翻译学期刊主题流来自站长自建的 rss-translation-studies（GitHub Pages，24 本刊的 DOI 增强订阅源），只接入行业相关的五条主题流；纯理论主题（综合翻译学/社会文化/认知过程）不进本站。 X 信源（x_search）需要 SOCIALDATA_API_KEY（SocialData，按量付费）才会抓取，未配置前显示抓取失败，不影响其他源；账号取自各公司官网页脚验证（Lilt/Lionbridge 为行业公认官方号）。领英无采集器支持，未纳入。",
+  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。 公众号条目（mp_account）需要先在后端 .env 配 DAJIALA_KEY（极致了，按次计费），再在后台“信源”里把每个号的 ghid（公众号原始 ID）补上；极致了后台可按昵称搜到 ghid。未填 ghid 的号停在未配置状态，不产生计费请求。 翻译学期刊主题流来自站长自建的 rss-translation-studies（GitHub Pages，24 本刊的 DOI 增强订阅源），只接入行业相关的五条主题流；纯理论主题（综合翻译学/社会文化/认知过程）不进本站。 X 信源（x_search）需要 SOCIALDATA_API_KEY（SocialData，按量付费）才会抓取，未配置前显示抓取失败，不影响其他源；账号取自各公司官网页脚验证（Lilt/Lionbridge 为行业公认官方号）。领英无采集器支持，未纳入。 2026-10-07 用 Agent Reach 方法（Wikidata P2002 + 候选猜解 + twitter-cli 验证简介/官网/粉丝数）批量发现 Top-100 公司 X 账号，人工剔除假阳性后新增 20 家；X 源统一 T2 分级（官方号但内容多为宣传，高门槛防止营销刷屏精选）。",
   "sources": [
     {
       "id": "rss-google-translate-blog",
@@ -469,7 +469,7 @@
         "query": "from:csa_research -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "csa",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -488,7 +488,7 @@
         "query": "from:TransPerfect -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "transperfect",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -507,7 +507,7 @@
         "query": "from:RWSGroup -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "rws",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -526,7 +526,7 @@
         "query": "from:AcoladGroup -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -545,7 +545,7 @@
         "query": "from:smartling -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -564,7 +564,7 @@
         "query": "from:ArgosMultiling -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -583,7 +583,7 @@
         "query": "from:Verztec -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -602,7 +602,7 @@
         "query": "from:MotionPoint -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -621,7 +621,7 @@
         "query": "from:KeywordsStudios -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -640,7 +640,7 @@
         "query": "from:PhrasePlatform -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "phrase",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -659,7 +659,7 @@
         "query": "from:liltglobal -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "lilt",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -678,7 +678,7 @@
         "query": "from:Lionbridge -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
       "owner_entity_id": "lionbridge",
       "participation_mode": "editorial",
       "interval_minutes": 180,
@@ -697,7 +697,387 @@
         "query": "from:amnhealthcare -filter:replies",
         "searchType": "Latest"
       },
-      "tier": "T1_5",
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-languageline",
+      "name": "LanguageLine Solutions · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:LanguageLine -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-languagewire",
+      "name": "LanguageWire · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:LanguageWire -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-eriksen",
+      "name": "Eriksen Translations · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:EriksenTrans -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-janus",
+      "name": "Janus Worldwide · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:JanusWorldwide -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-avantpage",
+      "name": "Avantpage · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:Avantpage -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-masterword",
+      "name": "MasterWord · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:masterword -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-allcorrect",
+      "name": "Allcorrect · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:allcorrect -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-zoo",
+      "name": "ZOO Digital · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:zoodigitalgroup -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-linguaserve",
+      "name": "Linguaserve · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:Linguaserve -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-logrus",
+      "name": "Logrus IT · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:LogrusIt -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-lingsoft",
+      "name": "Lingsoft · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:Lingsoft -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-elan",
+      "name": "ELAN Languages · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:Elanlanguages -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-swisssolutions",
+      "name": "Swiss Solutions · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:swisssolutions -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-locatran",
+      "name": "LocaTran · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:locatran -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-way2global",
+      "name": "Way2Global · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:way2global -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-synergium",
+      "name": "Synergium · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:synergium -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-hansem",
+      "name": "Hansem Global · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:HansemGlobal -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-seprotec",
+      "name": "Seprotec · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:SEPROTEC -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-star7",
+      "name": "STAR7 · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:star7group -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "X"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "x-pixelogic",
+      "name": "Pixelogic Media · X",
+      "kind": "x_search",
+      "config": {
+        "query": "from:PixelogicMedia -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 180,
