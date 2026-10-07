@@ -102,7 +102,7 @@
         "官方",
         "语言服务商"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
