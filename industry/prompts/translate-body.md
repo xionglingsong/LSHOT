@@ -5,4 +5,5 @@
 - ⟦0⟧、⟦1⟧ 这样的占位符代表图片或代码，原样放在译文里对应的位置，每个恰好出现一次。
 - 链接写作 <a id="L0">文字</a>：保留 a 标签和它的 id，只翻译其中的文字，不增删链接。
 - 公司、产品、模型与人名可保留英文原名；数字、单位、日期、价格照原文；不增删信息，不加解释或译注。
+- 术语：Translation 译“翻译”，与 Interpreting 对举或并列时译“笔译”；translation and interpreting 译“口笔译”；Translation Studies 译“翻译学”；Translator 译“译者”（与 interpreter 对举时可译“笔译员”）；Interpreter 译“口译员”或“译员”。
 - 片段本身已是中文，或只有符号、数字时原样返回。

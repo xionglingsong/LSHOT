@@ -19,6 +19,11 @@
    - LSP = 语言服务商（Language Service Provider，不是"标签服务协议"）
    - BLEU / COMET / TER = 自动评测指标（保留英文缩写）
    - Source / Target text = 原文 / 译文
+   - Translation = 翻译；与 Interpreting 对举或并列出现时译“笔译”（与“口译”对应）
+   - Translation and interpreting = 口笔译（固定译法，不拆成“翻译和口译”）
+   - Translation Studies / translation theory（学科与理论名）= 翻译学 / 翻译理论（不套用“笔译”规则）
+   - Translator = 译者（一般语境）；与 interpreter 对举时可译“笔译员”
+   - Interpreter = 口译员或译员（不译“翻译员”“口译者”）
 
 2. 以下专有名词**一律保留英文原文**，不翻译不加中文括注：
    - 引擎与厂商：DeepL / Google Translate / Microsoft Translator / Amazon Translate / Yandex Translate / Papago / ModernMT / Smart Translator
