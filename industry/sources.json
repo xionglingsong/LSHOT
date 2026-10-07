@@ -1277,7 +1277,7 @@
         "学术",
         "邮件列表"
       ],
-      "site_fulltext": false,
+      "site_fulltext": true,
       "syndicate_fulltext": false
     },
     {
