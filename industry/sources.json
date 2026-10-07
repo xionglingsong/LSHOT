@@ -1,5 +1,5 @@
 {
-  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。 公众号条目（mp_account）需要先在后端 .env 配 DAJIALA_KEY（极致了，按次计费），再在后台“信源”里把每个号的 ghid（公众号原始 ID）补上；极致了后台可按昵称搜到 ghid。未填 ghid 的号停在未配置状态，不产生计费请求。 翻译学期刊主题流来自站长自建的 rss-translation-studies（GitHub Pages，24 本刊的 DOI 增强订阅源），只接入行业相关的五条主题流；纯理论主题（综合翻译学/社会文化/认知过程）不进本站。 X 信源（x_search）需要 SOCIALDATA_API_KEY（SocialData，按量付费）才会抓取，未配置前显示抓取失败，不影响其他源；账号取自各公司官网页脚验证（Lilt/Lionbridge 为行业公认官方号）。领英无采集器支持，未纳入。 2026-10-07 用 Agent Reach 方法（Wikidata P2002 + 候选猜解 + twitter-cli 验证简介/官网/粉丝数）批量发现 Top-100 公司 X 账号，人工剔除假阳性后新增 20 家；X 源统一 T2 分级（官方号但内容多为宣传，高门槛防止营销刷屏精选）。 Reddit 走官方 .rss 通道（原生 rss 信源，间隔放宽到 6 小时防 429）。",
+  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。 公众号条目（mp_account）需要先在后端 .env 配 DAJIALA_KEY（极致了，按次计费），再在后台“信源”里把每个号的 ghid（公众号原始 ID）补上；极致了后台可按昵称搜到 ghid。未填 ghid 的号停在未配置状态，不产生计费请求。 翻译学期刊主题流来自站长自建的 rss-translation-studies（GitHub Pages，24 本刊的 DOI 增强订阅源），只接入行业相关的五条主题流；纯理论主题（综合翻译学/社会文化/认知过程）不进本站。 X 信源（x_search）需要 SOCIALDATA_API_KEY（SocialData，按量付费）才会抓取，未配置前显示抓取失败，不影响其他源；账号取自各公司官网页脚验证（Lilt/Lionbridge 为行业公认官方号）。领英无采集器支持，未纳入。 2026-10-07 用 Agent Reach 方法（Wikidata P2002 + 候选猜解 + twitter-cli 验证简介/官网/粉丝数）批量发现 Top-100 公司 X 账号，人工剔除假阳性后新增 20 家；X 源统一 T2 分级（官方号但内容多为宣传，高门槛防止营销刷屏精选）。 Reddit 走官方 .rss 通道（原生 rss 信源，间隔放宽到 6 小时防 429）。 行业机构：EUATC/ATC 为 WordPress 官方 RSS；GALA 官网新闻列表做 web_list；中国翻译协会走公众号（待 ghid）。AIIC/TAUS 官网为 JS 渲染暂无法采集，X 账号未验证待补。",
   "sources": [
     {
       "id": "rss-google-translate-blog",
@@ -1138,6 +1138,88 @@
       "tags": [
         "社区",
         "Reddit"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-euatc",
+      "name": "EUATC",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://euatc.org/feed/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "euatc",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "机构",
+        "行业组织"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-atc",
+      "name": "ATC 英国翻译公司协会",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://atc.org.uk/feed/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "atc",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "机构",
+        "行业组织"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-gala-news",
+      "name": "GALA 新闻与研究",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.gala-global.org/news/",
+        "parseMode": "html",
+        "itemSelector": "div.c-article-list",
+        "linkSelector": "a.c-article-list-full-width__title",
+        "titleSelector": "a.c-article-list-full-width__title",
+        "publishedAtSelector": ".c-article-list__date",
+        "allowUrlPrefixes": [
+          "https://www.gala-global.org/news/"
+        ]
+      },
+      "tier": "T1",
+      "owner_entity_id": "gala",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "机构",
+        "行业组织"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-tac",
+      "name": "中国翻译协会",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "中国翻译协会",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "tac",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
