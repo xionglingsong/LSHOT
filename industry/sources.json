@@ -1223,6 +1223,26 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-ylm",
+      "name": "译了么",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "gh_21e922db02f0",
+        "nickname": "译了么",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "yimelme",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }

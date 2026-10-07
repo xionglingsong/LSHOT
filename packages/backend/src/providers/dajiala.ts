@@ -67,7 +67,7 @@ export async function mpHistory(ghid: string, opts: { subject: string; window: s
         headers: { "content-type": "application/json", accept: "application/json" },
         body: JSON.stringify({ ghid, key, verifycode: "" }),
         timeoutMs: 30_000,
-        route: "direct",
+        route: "egress",
       });
       const text = res.text();
       assertAccepted("dajiala", res.status, text);
@@ -91,7 +91,7 @@ export async function mpArticle(articleUrl: string, opts: { subject: string; ide
         headers: { accept: "application/json" },
         timeoutMs: 30_000,
         maxBytes: 8 * 1024 * 1024,
-        route: "direct",
+        route: "egress",
       });
       const text = res.text();
       assertAccepted("dajiala", res.status, text);

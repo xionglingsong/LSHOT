@@ -120,6 +120,7 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   euatc: { name: "EUATC", displayTag: null, aliases: ["EUATC", "European Union of Associations of Translation Companies"] },
   atc: { name: "ATC", displayTag: null, aliases: ["ATC", "Association of Translation Companies"] },
   tac: { name: "中国翻译协会", displayTag: null, aliases: ["中国翻译协会", "Translators Association of China"] },
+  yimelme: { name: "译了么", displayTag: null, aliases: ["译了么"] },
 };
 
 /**
@@ -159,6 +160,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "euatc", name: "EUATC", patterns: [/euatc/i] },
   { id: "atc", name: "ATC", patterns: [/atc/i] },
   { id: "tac", name: "中国翻译协会", patterns: [/中国翻译协会|translators association of china/i] },
+  { id: "yimelme", name: "译了么", patterns: [/译了么/y] },
 ];
 
 /** 这些域名上的文章，发布方就是对应的公司（托管平台如 GitHub、arXiv 不算）。 */
