@@ -353,6 +353,42 @@
         "客户经营"
       ],
       "definition": "语言服务商的客户侧：客户获取与沟通、报价与账期、客户成功、需求管理与长期关系经营。"
+    },
+    {
+      "slug": "game-l10n",
+      "name": "游戏本地化",
+      "group": "field",
+      "tags": [
+        "游戏本地化"
+      ],
+      "definition": "游戏出海的语言侧：游戏翻译与 LQA、文化适配、多语言发行与运营。"
+    },
+    {
+      "slug": "transcreation",
+      "name": "创译",
+      "group": "field",
+      "tags": [
+        "创译"
+      ],
+      "definition": "超越直译的创意转换：品牌与营销文案的跨文化重写、广告与品牌名翻译。"
+    },
+    {
+      "slug": "compliance",
+      "name": "出海合规",
+      "group": "field",
+      "tags": [
+        "出海合规"
+      ],
+      "definition": "出海的法律语言侧：数据跨境与隐私合规、内容审查、多语言合同与法律文件。"
+    },
+    {
+      "slug": "patent",
+      "name": "专利翻译",
+      "group": "field",
+      "tags": [
+        "专利翻译"
+      ],
+      "definition": "知识产权的语言服务：专利翻译与本地化、IP 文件的多语言处理。"
     }
   ]
 }

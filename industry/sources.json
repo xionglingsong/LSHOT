@@ -1315,6 +1315,24 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-wipo",
+      "name": "WIPO 世界知识产权组织",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.wipo.int/pressroom/en/rss.xml"
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "机构",
+        "知识产权"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
