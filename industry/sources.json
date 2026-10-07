@@ -1,5 +1,5 @@
 {
-  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。",
+  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。以下 RSS 地址均于 2026-10 实测可访问；国内厂商的一手信息多在公众号上，接入需要极致了（Dajiala）的 key，可在后台“信源”页自行补充。 公众号条目（mp_account）需要先在后端 .env 配 DAJIALA_KEY（极致了，按次计费），再在后台“信源”里把每个号的 ghid（公众号原始 ID）补上；极致了后台可按昵称搜到 ghid。未填 ghid 的号停在未配置状态，不产生计费请求。",
   "sources": [
     {
       "id": "rss-google-translate-blog",
@@ -206,6 +206,126 @@
       "tags": [
         "媒体",
         "大会"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-volcengine-translate",
+      "name": "火山翻译",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "火山翻译",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "volcengine",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-iflytek",
+      "name": "科大讯飞",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "科大讯飞",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "iflytek",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-youdao",
+      "name": "网易有道",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "网易有道",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "youdao",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-baidu-translate",
+      "name": "百度翻译",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "百度翻译",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "baidu",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-tencent-tranSmart",
+      "name": "腾讯翻译君",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "腾讯翻译君",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "tencent",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "mp-timekettle",
+      "name": "Timekettle时空壶",
+      "kind": "mp_account",
+      "config": {
+        "ghid": "",
+        "nickname": "Timekettle时空壶",
+        "publisherRole": "organization"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "timekettle",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "公众号"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
