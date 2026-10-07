@@ -29,7 +29,10 @@
       "name": "Google 翻译",
       "group": "company",
       "entityId": "google",
-      "aliases": ["Google Cloud", "DeepMind"],
+      "aliases": [
+        "Google Cloud",
+        "DeepMind"
+      ],
       "definition": "Google 的语言技术动态：Google 翻译、Cloud Translation API、语音翻译研究与产品生态。"
     },
     {
@@ -93,7 +96,9 @@
       "name": "火山翻译",
       "group": "company",
       "entityId": "volcengine",
-      "aliases": ["字节跳动"],
+      "aliases": [
+        "字节跳动"
+      ],
       "definition": "字节跳动火山翻译的动态：机器翻译引擎、同传字幕、视频翻译与企业级服务。"
     },
     {
@@ -101,183 +106,253 @@
       "name": "腾讯翻译",
       "group": "company",
       "entityId": "tencent",
-      "aliases": ["TranSmart"],
+      "aliases": [
+        "TranSmart"
+      ],
       "definition": "腾讯的翻译动态：腾讯翻译君、TranSmart 交互翻译、会议同传与腾讯云翻译 API。"
     },
     {
       "slug": "mt",
       "name": "机器翻译",
       "group": "field",
-      "tags": ["机器翻译"],
+      "tags": [
+        "机器翻译"
+      ],
       "definition": "机器翻译的一切：MT 引擎迭代、语言对扩展、术语一致性、垂直领域定制与 API 价格变化。"
     },
     {
       "slug": "llm-translation",
       "name": "大模型翻译",
       "group": "field",
-      "tags": ["大模型翻译"],
+      "tags": [
+        "大模型翻译"
+      ],
       "definition": "用大语言模型做翻译：LLM 翻译质量与风格控制、提示词方法、与经典 MT 的对比和混合流水线。"
     },
     {
       "slug": "asr",
       "name": "语音识别",
       "group": "field",
-      "tags": ["语音识别"],
+      "tags": [
+        "语音识别"
+      ],
       "definition": "自动语音识别的进展：多语言 ASR、口音与噪声鲁棒性、字幕自动生成与转写服务。"
     },
     {
       "slug": "tts",
       "name": "语音合成",
       "group": "field",
-      "tags": ["语音合成"],
+      "tags": [
+        "语音合成"
+      ],
       "definition": "语音合成与配音的进展：多语言 TTS、声音克隆、情感语音与本地化配音的生产化。"
     },
     {
       "slug": "interpretation",
       "name": "同声传译",
       "group": "field",
-      "tags": ["同声传译"],
+      "tags": [
+        "同声传译"
+      ],
       "definition": "语音同传与机器口译：实时语音翻译系统、会议同传平台、远程口译与译员机辅同传的进展。"
     },
     {
       "slug": "subtitling",
       "name": "字幕与配音",
       "group": "field",
-      "tags": ["字幕配音"],
+      "tags": [
+        "字幕配音"
+      ],
       "definition": "影视与视频的翻译：自动字幕、多语言配音、译制流程与平台出海的内容本地化。"
     },
     {
       "slug": "cat",
       "name": "CAT 与 TMS",
       "group": "field",
-      "tags": ["计算机辅助翻译"],
+      "tags": [
+        "计算机辅助翻译"
+      ],
       "definition": "计算机辅助翻译与翻译管理系统：CAT/TMS 平台演进、翻译记忆、协作流程与定价。"
     },
     {
       "slug": "localization",
       "name": "本地化",
       "group": "field",
-      "tags": ["本地化"],
+      "tags": [
+        "本地化"
+      ],
       "definition": "软件、游戏、产品与内容的本地化：流程、标准、市场进入与本地化工程实践。"
     },
     {
       "slug": "going-global",
       "name": "出海国际化",
       "group": "field",
-      "tags": ["出海国际化"],
+      "tags": [
+        "出海国际化"
+      ],
       "definition": "中国企业出海的语言服务需求：多语言官网、跨境电商、海外营销与合规沟通的翻译支持。"
     },
     {
       "slug": "post-editing",
       "name": "译后编辑",
       "group": "field",
-      "tags": ["译后编辑"],
+      "tags": [
+        "译后编辑"
+      ],
       "definition": "人机协作的译后编辑：MTPE 流程、费率与质量分层、译员工效与自动化评估。"
     },
     {
       "slug": "terminology",
       "name": "术语管理",
       "group": "field",
-      "tags": ["术语管理"],
+      "tags": [
+        "术语管理"
+      ],
       "definition": "术语与词汇管理：术语库、品牌词表、多语言命名与行业术语标准。"
     },
     {
       "slug": "quality-evaluation",
       "name": "质量评估",
       "group": "field",
-      "tags": ["质量评估"],
+      "tags": [
+        "质量评估"
+      ],
       "definition": "翻译质量评估：MQM 等质量框架、自动评测指标、QA 工具与质量事故复盘。"
     },
     {
       "slug": "language-data",
       "name": "语言数据",
       "group": "field",
-      "tags": ["语言数据"],
+      "tags": [
+        "语言数据"
+      ],
       "definition": "语言数据与语料：平行语料库、数据授权与交易、数据标注与低资源语言的数据建设。"
     },
     {
       "slug": "translators",
       "name": "译员生态",
       "group": "field",
-      "tags": ["译员生态"],
+      "tags": [
+        "译员生态"
+      ],
       "definition": "译员与口译员的职业动态：需求变化、费率、技能转型、人才培养与职业争论。"
     },
     {
       "slug": "devices",
       "name": "翻译硬件",
       "group": "field",
-      "tags": ["翻译硬件"],
+      "tags": [
+        "翻译硬件"
+      ],
       "definition": "消费级翻译硬件：翻译耳机、翻译机、词典笔与随身同传设备的新品与评测。"
     },
     {
       "slug": "engine-releases",
       "name": "引擎发布",
       "group": "genre",
-      "tags": ["引擎发布"],
+      "tags": [
+        "引擎发布"
+      ],
       "definition": "新引擎与模型的发布：机器翻译引擎、翻译大模型、ASR/TTS 与同传系统的版本更新和能力边界。"
     },
     {
       "slug": "product-updates",
       "name": "产品更新",
       "group": "genre",
-      "tags": ["产品更新"],
+      "tags": [
+        "产品更新"
+      ],
       "definition": "工具与产品的上新：CAT/TMS、口译平台、翻译 API 与桌面工具的功能与定价变化。"
     },
     {
       "slug": "papers",
       "name": "论文研究",
       "group": "genre",
-      "tags": ["论文/研究"],
+      "tags": [
+        "论文/研究"
+      ],
       "definition": "值得读的论文与研究报告：WMT/IWSLT 等评测、新方法与语言能力边界的实证发现。"
     },
     {
       "slug": "benchmarks",
       "name": "评测基准",
       "group": "genre",
-      "tags": ["评测/基准"],
+      "tags": [
+        "评测/基准"
+      ],
       "definition": "谁翻得更好：机器翻译与语音翻译评测的成绩、方法论争议与排行榜变化。"
     },
     {
       "slug": "tutorials",
       "name": "教程实践",
       "group": "genre",
-      "tags": ["教程/实践"],
+      "tags": [
+        "教程/实践"
+      ],
       "definition": "拿来就能用的实操内容：译后编辑流程、提示词与工作流、术语库搭建与工具用法。"
     },
     {
       "slug": "opinions",
       "name": "大佬观点",
       "group": "genre",
-      "tags": ["大佬观点"],
+      "tags": [
+        "大佬观点"
+      ],
       "definition": "行业关键人物在想什么：语言服务商高管、研究者与资深译员的判断和论战。"
     },
     {
       "slug": "trends",
       "name": "现象与趋势",
       "group": "genre",
-      "tags": ["现象/趋势"],
+      "tags": [
+        "现象/趋势"
+      ],
       "definition": "正在发生的行业级变化：AI 对翻译工作流的重塑、市场格局迁移与语言服务需求的消长。"
     },
     {
       "slug": "industry",
       "name": "行业动态",
       "group": "genre",
-      "tags": ["行业动态"],
+      "tags": [
+        "行业动态"
+      ],
       "definition": "语言服务行业的商业脉搏：融资并购、财报、人事、合作竞争与市场信号。"
     },
     {
       "slug": "policy",
       "name": "政策监管",
       "group": "genre",
-      "tags": ["政策/监管"],
+      "tags": [
+        "政策/监管"
+      ],
       "definition": "相关政策与监管：语言权利与公共服务口译、数据跨境与保密要求、行业标准制定。"
     },
     {
       "slug": "opensource",
       "name": "开源生态",
       "group": "genre",
-      "tags": ["开源/仓库"],
+      "tags": [
+        "开源/仓库"
+      ],
       "definition": "开源翻译技术：开放权重模型、MT 工具链、语料与评测资源的开放与社区项目。"
+    },
+    {
+      "slug": "pm",
+      "name": "项目管理",
+      "group": "field",
+      "tags": [
+        "项目管理"
+      ],
+      "definition": "翻译与本地化的项目交付：排期、供应商与译员资源、交付流程、工具自动化与规模化生产的管理实践。"
+    },
+    {
+      "slug": "client-ops",
+      "name": "客户经营",
+      "group": "field",
+      "tags": [
+        "客户经营"
+      ],
+      "definition": "语言服务商的客户侧：客户获取与沟通、报价与账期、客户成功、需求管理与长期关系经营。"
     }
   ]
 }

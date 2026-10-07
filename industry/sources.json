@@ -1279,6 +1279,42 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-baijing",
+      "name": "白鲸出海",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.baijing.cn/feed"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "媒体",
+        "出海"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-restofworld",
+      "name": "Rest of World",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://restofworld.org/feed/"
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "媒体",
+        "出海"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
