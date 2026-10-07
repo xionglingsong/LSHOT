@@ -45,16 +45,16 @@ Slator 和 CSA Research 出了新报告，要去翻它们的官网；Target 和 
 
 ## 它盯什么
 
-62 个信源，六类：
+65 个信源，六类：
 
 | 类别 | 信源 | 说明 |
 |---|---|---|
 | **行业分析机构** | CSA Research、Slator、Nimdzi | Top 100 榜单、市场规模、行业报告 |
-| **行业协会** | GALA、ATC、EUATC、中国翻译协会 | 年度调查、行业倡议、政策动向 |
+| **行业协会** | GALA、ATC、EUATC、中国翻译协会、国际译联 FIT | 年度调查、行业倡议、语言权利与政策动向 |
 | **翻译学期刊** | 24 本期刊的五条主题流 | 经 [rss-translation-studies](https://github.com/xionglingsong/rss-translation-studies) 增强，只收行业相关主题：数字与 AI 翻译、视听翻译、术语、口译、译者教育 |
 | **厂商与机构 X 账号** | 33 个 | Top-100 语言服务商的官方账号（DeepL、RWS、TransPerfect、LanguageWire、Smartling 等），用 Agent Reach 方法逐个验证 |
-| **社区** | r/MachineTranslation 等 | 海外从业者的真实讨论 |
-| **微信公众号** | 火山翻译、科大讯飞、网易有道等 | 国内厂商一手信息（需配置极致了 key 启用） |
+| **社区与学术公告** | r/MachineTranslation、TRANSLATIO 学术邮件列表（JiscMail） | 海外从业者的真实讨论；翻译研究的岗位、CFP 与新书公告 |
+| **微信公众号** | 译了么、火山翻译、科大讯飞、网易有道等 | 国内一手信息（需极致了 key；译了么已接入按需启用，其余待补 ghid） |
 
 ## 这个站的定制
 
@@ -64,6 +64,7 @@ Slator 和 CSA Research 出了新报告，要去翻它们的官网；Target 和 
 |---|---|
 | **学术评分体系** | `research_paper` 内容类型按学术价值单独定义评分轴，论文和新闻各按各的尺度竞争版面；期刊流独立门槛 |
 | **行业术语规则** | 翻译圈的标准译法写进提示词：Translation 与 Interpreting 对举时译「笔译/口译」、translation and interpreting 译「口笔译」、audio description 译「口述影像」、译者/口译员称谓规范——部分来自读者反馈，持续迭代 |
+| **反馈闭环** | 站内反馈表单直达飞书群；读者提交的术语修正当天可进提示词全站生效（第一条实战：口述影像） |
 | **AI 翻译切换** | 入选精选的外文内容自动全文中译，详情页「中文 / 原文」一键切换，标注「正文 · AI 翻译」 |
 | **版权纪律** | 全文展示只对明确允许的信源开放（RSS 输出全文的、期刊摘要流），商业媒体一律摘要 + 原文链接 |
 | **机构矩阵** | CSA/Slator/Nimdzi/GALA/ATC/EUATC/中译协的实体识别与信源接入 |
