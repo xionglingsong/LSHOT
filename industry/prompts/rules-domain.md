@@ -12,7 +12,7 @@
    - Internationalization (i18n) = 国际化
    - Post-editing / MTPE = 译后编辑 / 机器翻译译后编辑
    - Transcription = 转写（语音转文字，不是"抄写/转录"）
-   - Dubbing = 配音；Subtitling = 字幕制作（不是"副标题"）
+   - Dubbing = 配音; audio description = 口述影像（视听翻译与无障碍传播术语，不译“音频描述”）；Subtitling = 字幕制作（不是"副标题"）
    - Terminology = 术语（不是"名称学"）
    - Corpus / Corpora = 语料库（不是"尸体"复数）
    - Language pair = 语言对（不是"语言伴侣"）
