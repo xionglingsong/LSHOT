@@ -1261,6 +1261,24 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-translatio-list",
+      "name": "TRANSLATIO 翻译研究邮件列表",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.jiscmail.ac.uk/cgi-bin/WA-JISC.exe?RSS&L=TRANSLATIO"
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "学术",
+        "邮件列表"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }
