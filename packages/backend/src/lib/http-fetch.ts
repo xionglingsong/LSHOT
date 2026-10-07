@@ -30,7 +30,7 @@ function egressResolver() {
 function proxied(url: URL, route: EgressRoute): boolean {
   if (route !== "egress" || !config.egressProxyUrl) return false;
   const host = url.hostname.replace(/^\[|\]$/g, "").toLowerCase();
-  return net.isIP(host) === 0 && !host.endsWith(".cn") && !host.endsWith(".local") && !DEPLOYMENT.directFetchHosts.includes(host);
+  return net.isIP(host) === 0 && !host.endsWith(".local") && !DEPLOYMENT.directFetchHosts.includes(host);
 }
 
 function dispatcherFor(viaProxy: boolean): Dispatcher | undefined {
