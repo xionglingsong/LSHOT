@@ -1090,10 +1090,10 @@
     },
     {
       "id": "rss-reddit-machinetranslation",
-      "name": "r/MachineTranslation",
+      "name": "r/MachineTranslation 热帖",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.reddit.com/r/MachineTranslation/new/.rss"
+        "feedUrl": "https://www.reddit.com/r/MachineTranslation/hot/.rss"
       },
       "tier": "T2",
       "owner_entity_id": null,
@@ -1108,10 +1108,10 @@
     },
     {
       "id": "rss-reddit-translationstudies",
-      "name": "r/translationstudies",
+      "name": "r/translationstudies 热帖",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.reddit.com/r/translationstudies/new/.rss"
+        "feedUrl": "https://www.reddit.com/r/translationstudies/hot/.rss"
       },
       "tier": "T2",
       "owner_entity_id": null,
@@ -1126,10 +1126,10 @@
     },
     {
       "id": "rss-reddit-localization",
-      "name": "r/Localization",
+      "name": "r/Localization 热帖",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.reddit.com/r/Localization/new/.rss"
+        "feedUrl": "https://www.reddit.com/r/Localization/hot/.rss"
       },
       "tier": "T2",
       "owner_entity_id": null,
@@ -1861,6 +1861,48 @@
       "tags": [
         "技术写作",
         "开发者"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-reddit-translator",
+      "name": "r/translator 热帖",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.reddit.com/r/translator/hot/.rss",
+        "_aihot": {
+          "initialBackfillLimit": 10
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "社区",
+        "Reddit"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-reddit-interpretation",
+      "name": "r/interpretation 热帖",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.reddit.com/r/interpretation/hot/.rss",
+        "_aihot": {
+          "initialBackfillLimit": 10
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "社区",
+        "Reddit"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
