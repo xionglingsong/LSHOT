@@ -45,7 +45,7 @@ export const CATEGORY_TAGS = [
 
 /** 可选的主题标签。 */
 export const TOPIC_TAGS = [
-  "机器翻译", "大模型翻译", "语音识别", "语音合成", "同声传译", "字幕配音", "计算机辅助翻译", "本地化", "出海国际化", "译后编辑", "术语管理", "质量评估", "语言数据", "译员生态", "翻译硬件", "项目管理", "客户经营", "游戏本地化", "创译", "出海合规", "专利翻译",
+  "机器翻译", "大模型翻译", "语音识别", "语音合成", "同声传译", "字幕配音", "计算机辅助翻译", "本地化", "出海国际化", "译后编辑", "术语管理", "质量评估", "语言数据", "译员生态", "翻译硬件", "项目管理", "客户经营", "游戏本地化", "创译", "出海合规", "专利翻译", "无障碍", "技术写作",
 ] as const;
 
 /** 可选的实体标签（公司、机构、平台）。 */
@@ -75,6 +75,8 @@ export const TAG_SYNONYMS: Readonly<Record<string, string>> = {
   "transcreation": "创译", "创意翻译": "创译", "营销翻译": "创译", "品牌翻译": "创译", "广告翻译": "创译",
   "数据合规": "出海合规", "GDPR": "出海合规", "隐私合规": "出海合规", "出海法务": "出海合规", "数据跨境": "出海合规", "合规审查": "出海合规",
   "专利本地化": "专利翻译", "IP翻译": "专利翻译", "知识产权翻译": "专利翻译", "patent translation": "专利翻译",
+  "accessibility": "无障碍", "a11y": "无障碍", "WCAG": "无障碍", "screen reader": "无障碍", "无障碍设计": "无障碍", "残障": "无障碍", "辅助技术": "无障碍", "口述影像": "无障碍",
+  "technical writing": "技术写作", "tech writing": "技术写作", "documentation": "技术写作", "技术文档": "技术写作", "API文档": "技术写作", "开发者文档": "技术写作",
   "教程/玩法": "教程/实践", "技巧/最佳实践": "教程/实践", "合作/生态": "行业动态", "融资/收购": "行业动态", "公司动态": "行业动态",
   合作: "行业动态", 生态: "行业动态", 融资: "行业动态", 收购: "行业动态", 投资: "行业动态", 并购: "行业动态", 财报: "行业动态",
   政策: "政策/监管", 监管: "政策/监管", 法规: "政策/监管", 标准: "政策/监管",
@@ -130,7 +132,6 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   fit: { name: "国际译联", displayTag: null, aliases: ["国际译联", "FIT", "International Federation of Translators"] },
   netflix: { name: "Netflix", displayTag: null, aliases: ["Netflix", "Netflix Tech"] },
   interprefy: { name: "Interprefy", displayTag: null, aliases: ["Interprefy"] },
-  wordly: { name: "Wordly", displayTag: null, aliases: ["Wordly"] },
 };
 
 /**

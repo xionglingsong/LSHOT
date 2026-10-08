@@ -389,6 +389,24 @@
         "专利翻译"
       ],
       "definition": "知识产权的语言服务：专利翻译与本地化、IP 文件的多语言处理。"
+    },
+    {
+      "slug": "accessibility",
+      "name": "无障碍",
+      "group": "field",
+      "tags": [
+        "无障碍"
+      ],
+      "definition": "语言服务的无障碍侧：WCAG 与口述影像标准、屏幕阅读器与辅助技术、多语言无障碍合规。"
+    },
+    {
+      "slug": "tech-writing",
+      "name": "技术写作",
+      "group": "field",
+      "tags": [
+        "技术写作"
+      ],
+      "definition": "多语言技术内容的生产：API 文档、开发者文档、本地化文档工程与技术写作实践。"
     }
   ]
 }

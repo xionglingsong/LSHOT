@@ -254,3 +254,7 @@ Content-Type: application/json
 - `sourceId` 不存在时会自动建一个 `external` 信源，默认不进公开页面：到后台把它的参与方式改成 `editorial` 才会出现在站上。
 - 在后台暂停信源后，推送接口返回 409，不再接收新文章；恢复信源后可以继续推送。
 - 条目的 `raw._aihot.backfill` 为 `true` 时按历史回灌处理（不进入“今天”、不推送）。
+
+### YouTube 字幕文件
+
+已有视频可通过后台「YouTube 字幕」导入插件或 yt-dlp 导出的字幕文件，详见 [转存与翻译](youtube-transcript.md)。视频描述仍只作摘要；导入不改变信源全文许可。

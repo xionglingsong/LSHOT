@@ -19,11 +19,10 @@ import { modelFor } from "./models.ts";
 import { shutdownSignal } from "../jobs/queue.ts";
 import { promptText, promptVersion } from "./prompts.ts";
 import { emit } from "../modules.ts";
+import { translationParts } from "./translation-parts.ts";
 
 export const TRANSLATE_PROMPT_VERSION = promptVersion("translate-body", "translate-post");
 const BATCH_CHARS = 3500;
-/** Longer bodies get their first part translated and are marked incomplete. */
-const MAX_CHARS = 60_000;
 /** X posts shorter than this carry their meaning in the Chinese title and summary. */
 const X_MIN_CHARS = 60;
 
@@ -33,6 +32,11 @@ const CONTAINER = /^(p|h[2-5]|li|blockquote|figcaption|td|th|dt|dd|caption|ul|ol
 const Output = z.object({ t: z.array(z.string()) });
 
 class TranslationInterruptedError extends Error {}
+
+function continueTranslation(deadline: number) {
+  if (shutdownSignal.signal.aborted) throw new TranslationInterruptedError("worker shutting down");
+  if (Date.now() >= deadline) throw new TranslationInterruptedError("translation time budget reached; resume from receipts");
+}
 
 const SYSTEM_BODY = promptText("translate-body");
 
@@ -47,7 +51,11 @@ export interface TranslateResult {
   reason?: string;
 }
 
-const isChinese = (language: string | null, sample: string) => language === "zh" || (/[一-鿿]/.test(sample.slice(0, 400)) && language !== "en");
+const isChinese = (language: string | null, sample: string) => {
+  if (language) return /^zh(?:-|$)/i.test(language);
+  const letters = sample.match(/\p{L}/gu) ?? [];
+  return letters.length > 0 && (sample.match(/[一-鿿]/g) ?? []).length / letters.length > 0.5;
+};
 
 /** Leaf text blocks of a sanitised body, in document order, skipping code. */
 function segmentsOf($: cheerio.CheerioAPI): Element[] {
@@ -59,7 +67,7 @@ function segmentsOf($: cheerio.CheerioAPI): Element[] {
       if (el.name === "pre" || el.name === "code") continue;
       const hasBlockChild = el.children.some((c) => c.type === "tag" && CONTAINER.test((c as Element).name));
       if (BLOCK.has(el.name) && !hasBlockChild) {
-        if (/[A-Za-zÀ-ɏЀ-ӿ぀-ヿ]/.test($(el).text())) out.push(el);
+        if (/\p{L}/u.test($(el).text())) out.push(el);
         continue;
       }
       visit(el.children);
@@ -69,10 +77,10 @@ function segmentsOf($: cheerio.CheerioAPI): Element[] {
   return out;
 }
 
-async function translateBatch(articleId: string, revision: number, index: number, parts: string[], system: string, attemptTag?: string): Promise<string[] | null> {
-  if (shutdownSignal.signal.aborted) throw new TranslationInterruptedError("worker shutting down");
+async function translateBatch(articleId: string, revision: number, index: number, parts: string[], system: string, attemptTag: string | undefined, deadline: number): Promise<string[] | null> {
+  continueTranslation(deadline);
   const model = await modelFor("translate");
-  if (shutdownSignal.signal.aborted) throw new TranslationInterruptedError("worker shutting down");
+  continueTranslation(deadline);
   const res = await chatJson({
     model,
     purpose: "translate_body",
@@ -90,7 +98,7 @@ async function translateBatch(articleId: string, revision: number, index: number
 }
 
 /** Translates batches, halving a batch once when the answer does not line up with the input. */
-async function translateAll(articleId: string, revision: number, parts: string[], system: string, attemptTag?: string): Promise<Array<string | null>> {
+async function translateAll(articleId: string, revision: number, parts: string[], system: string, attemptTag: string | undefined, deadline: number): Promise<Array<string | null>> {
   const out: Array<string | null> = new Array(parts.length).fill(null);
   let start = 0;
   let index = 0;
@@ -99,11 +107,12 @@ async function translateAll(articleId: string, revision: number, parts: string[]
     let chars = 0;
     while (end < parts.length && (end === start || chars + parts[end]!.length <= BATCH_CHARS)) chars += parts[end++]!.length;
     const batch = parts.slice(start, end);
-    let done = await translateBatch(articleId, revision, index++, batch, system, attemptTag);
+    if (chars > BATCH_CHARS && system === SYSTEM_BODY) { start = end; continue; }
+    let done = await translateBatch(articleId, revision, index++, batch, system, attemptTag, deadline);
     if (!done && batch.length > 1) {
       const mid = Math.ceil(batch.length / 2);
-      const left = await translateBatch(articleId, revision, index++, batch.slice(0, mid), system, attemptTag);
-      const right = await translateBatch(articleId, revision, index++, batch.slice(mid), system, attemptTag);
+      const left = await translateBatch(articleId, revision, index++, batch.slice(0, mid), system, attemptTag, deadline);
+      const right = await translateBatch(articleId, revision, index++, batch.slice(mid), system, attemptTag, deadline);
       done = left && right ? [...left, ...right] : null;
     }
     if (done) done.forEach((t, i) => (out[start + i] = t));
@@ -137,10 +146,12 @@ export function shield(inner: string): Shielded {
 
 /** The translated block with its media, code and links put back; null when the answer lost or repeated any. */
 export function unshield(translated: string, s: Shielded): string | null {
+  if (!translated.trim()) return null;
   const counts = new Map<number, number>();
   for (const m of translated.matchAll(/⟦(\d+)⟧/g)) counts.set(Number(m[1]), (counts.get(Number(m[1])) ?? 0) + 1);
   if (counts.size !== s.tokens.length || s.tokens.some((_t, i) => counts.get(i) !== 1)) return null;
   const $ = cheerio.load(translated, null, false);
+  if (!$.root().text().trim()) return null;
   const seen = new Set<number>();
   let intact = true;
   $("a").each((_i, a) => {
@@ -156,7 +167,9 @@ export function unshield(translated: string, s: Shielded): string | null {
   return $.html().replace(/⟦(\d+)⟧/g, (_m, n: string) => s.tokens[Number(n)]!);
 }
 
-export async function translateArticle(articleId: string): Promise<TranslateResult> {
+export async function translateArticle(articleId: string, opts: { budgetMs?: number } = {}): Promise<TranslateResult> {
+  // Leave room for the last sent request to settle before the one-hour job expires.
+  const deadline = Date.now() + (opts.budgetMs ?? 50 * 60_000);
   const [row] = await sql<{ revision: number; channel: string; language: string | null; body_html: string | null; body_text: string | null; x_post: { text?: string } | null; title: string; selected: boolean; body_mode: string; visibility: string }[]>`
     SELECT a.revision, p.channel, a.language, a.body_html, a.body_text, a.x_post, p.title, p.selected, p.body_mode, p.visibility
     FROM publications p JOIN articles a ON a.id = p.article_id WHERE p.article_id = ${articleId}`;
@@ -170,7 +183,7 @@ export async function translateArticle(articleId: string): Promise<TranslateResu
     const meaningful = collapseWhitespace(text.replace(/https?:\/\/\S+/g, ""));
     if (isChinese(row.language, text)) return result({ status: "skipped", reason: "already Chinese" });
     if (meaningful.length < X_MIN_CHARS) return result({ status: "skipped", reason: "short post" });
-    const [t] = await translateAll(articleId, row.revision, [text], SYSTEM_POST);
+    const [t] = await translateAll(articleId, row.revision, [text], SYSTEM_POST, undefined, deadline);
     if (!t) return result({ status: "skipped", reason: "translation did not line up" });
     await store(articleId, row.revision, row.title, textToHtml(t), t, true);
     return result({ status: "translated", segments: 1 });
@@ -180,33 +193,29 @@ export async function translateArticle(articleId: string): Promise<TranslateResu
   const $ = cheerio.load(row.body_html, null, false);
   const blocks = segmentsOf($);
   if (!blocks.length) return result({ status: "skipped", reason: "no translatable text" });
-  // Beyond the cap, only the leading blocks are translated; the rest keep the original text.
-  let budget = MAX_CHARS;
-  const chosen: Element[] = [];
-  for (const el of blocks) {
-    const html = $(el).html() ?? "";
-    if (html.length > budget) break;
-    budget -= html.length;
-    chosen.push(el);
-  }
-  const shielded = chosen.map((el) => shield($(el).html() ?? ""));
+  // Imported transcripts and older oversized paragraphs are translated in bounded fragments.
+  const plans = blocks.map(el => translationParts($(el).html() ?? "", BATCH_CHARS));
+  const shielded = plans.flat().map(html => shield(html));
   const restore = (answers: Array<string | null>) => answers.map((t, i) => (t === null ? null : unshield(t, shielded[i]!)));
-  const translations = restore(await translateAll(articleId, row.revision, shielded.map((b) => b.html), SYSTEM_BODY));
+  const translations = restore(await translateAll(articleId, row.revision, shielded.map((b) => b.html), SYSTEM_BODY, undefined, deadline));
   // Blocks whose answer dropped a link or an image are asked once more, on their own receipt.
   const missing = translations.flatMap((t, i) => (t === null ? [i] : []));
   if (missing.length) {
-    const again = await translateAll(articleId, row.revision, missing.map((i) => shielded[i]!.html), SYSTEM_BODY, "retry");
+    const again = await translateAll(articleId, row.revision, missing.map((i) => shielded[i]!.html), SYSTEM_BODY, "retry", deadline);
     missing.forEach((i, k) => (translations[i] = again[k] ? unshield(again[k]!, shielded[i]!) : null));
   }
   let done = 0;
-  chosen.forEach((el, i) => {
-    const t = translations[i];
-    if (t) {
-      $(el).html(t);
-      done += 1;
-    }
+  let offset = 0;
+  let translatedParts = 0;
+  blocks.forEach((el, i) => {
+    const parts = plans[i]!;
+    const answers = translations.slice(offset, offset + parts.length);
+    offset += parts.length;
+    translatedParts += answers.filter(Boolean).length;
+    $(el).html(answers.map((t, k) => t || parts[k]!).join(" "));
+    if (answers.every(Boolean)) done += 1;
   });
-  if (!done) return result({ status: "skipped", reason: "no batch translated" });
+  if (!translatedParts) return result({ status: "skipped", reason: "no batch translated" });
   const complete = done === blocks.length;
   const html = sanitizeBody($.html());
   await store(articleId, row.revision, row.title, html, cheerio.load(html, null, false).root().text().trim(), complete);
@@ -324,13 +333,13 @@ export async function translatePending(opts: { limit?: number; budgetMs?: number
     // model was answering, the new revision still has no attempt and is translated on the next run.
     let revision: number | null = null;
     try {
-      const result = await translateArticle(r.article_id);
+      const result = await translateArticle(r.article_id, { budgetMs: (opts.budgetMs ?? 4 * 60_000) - (Date.now() - started) });
       done.push(result);
       outcome = result.status;
       reason = result.reason ?? null;
       revision = result.revision ?? null;
     } catch (error) {
-      // A deploy stops between paid fragments, never aborts a sent request. Received answers stay
+      // Shutdown or the run deadline stops between paid fragments, never aborts a sent request. Answers stay
       // in receipts and are reused next run; do not mark an interrupted article terminal/partial.
       if (error instanceof TranslationInterruptedError) break;
       const message = (error as Error).message;

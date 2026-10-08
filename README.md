@@ -65,6 +65,7 @@ Slator 和 CSA Research 出了新报告，要去翻它们的官网；Target 和 
 | **学术评分体系** | `research_paper` 内容类型按学术价值单独定义评分轴，论文和新闻各按各的尺度竞争版面；期刊流独立门槛 |
 | **行业术语规则** | 翻译圈的标准译法写进提示词：Translation 与 Interpreting 对举时译「笔译/口译」、translation and interpreting 译「口笔译」、audio description 译「口述影像」、译者/口译员称谓规范——部分来自读者反馈，持续迭代 |
 | **反馈闭环** | 站内反馈表单直达飞书群；读者提交的术语修正当天可进提示词全站生效（第一条实战：口述影像） |
+| **YouTube 字幕转存** | 后台导入 VTT/SRT、JSON3 或插件 Transcript HTML/Markdown，按停顿分段、保留时间戳链接，长字幕通过 worker 分批翻译；[操作说明](docs/youtube-transcript.md) |
 | **AI 翻译切换** | 入选精选的外文内容自动全文中译，详情页「中文 / 原文」一键切换，标注「正文 · AI 翻译」 |
 | **版权纪律** | 全文展示只对明确允许的信源开放（RSS 输出全文的、期刊摘要流），商业媒体一律摘要 + 原文链接 |
 | **机构矩阵** | CSA/Slator/Nimdzi/GALA/ATC/EUATC/中译协的实体识别与信源接入 |
