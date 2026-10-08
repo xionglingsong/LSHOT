@@ -1,28 +1,38 @@
 {
-  "latestVersion": "2026-10-07T22:30",
+  "latestVersion": "2026-10-08T12:00",
   "releases": [
     {
-      "date": "2026-10-07",
-      "time": "22:30",
+      "date": "2026-10-08",
+      "time": "12:00",
       "kind": "更新",
-      "title": "语服热点上线首日：87 个信源、25 个主题、全文翻译与邮件列表",
+      "title": "YouTube 视频转写上线、无障碍与技术写作主题、信源继续扩充",
       "body": [
-        "今天网站正式上线，从上午 10 点到现在做了一轮完整的迭代。信源从最初的 10 个扩充到 87 个，功能上补齐了全文翻译、主题分类和邮件列表接入。以下是具体做了什么。",
-        "信源方面，新增了五类内容来源。行业机构：CSA Research、GALA、ATC、EUATC、国际译联 FIT、中国翻译协会。大厂技术博客：Netflix Tech Blog、Google AI Blog、Google Research。行业播客：SlatorPod、Nimdzi LIVE、Translation Confidential 等九个。自由译员 YouTube 频道：Freelance Translator Academy、Interpreting & Language Learning 等。出海和社区：白鲸出海、Rest of World、Reddit 的 MachineTranslation 版块。",
-        "主题标签从 15 个扩展到 25 个，新增了项目管理、客户经营、游戏本地化、创译、出海合规和专利翻译六个方向。现在你可以在主题页按这些方向浏览相关内容。",
-        "阅读体验方面，精选文章的外文正文现在支持中文和原文一键切换，由 AI 自动完成全文翻译。目前 Welocalize 博客和五条期刊论文摘要流已开启这个功能。",
-        "翻译术语规则也在今天上线。第一位读者通过反馈页面提交了修正：audio description 应该译作「口述影像」而非「音频描述」。这条建议在提交后当天就写进了翻译规则，之后全站生效。",
-        "TRANSLATIO 翻译研究邮件列表通过邮件桥接入，每封邮件的完整正文会自动进入站内并配上 AI 中文导读，不再受限于 RSS 的摘要截断。",
-        "精选门槛根据今天的实际数据做了一轮校准，日报、周报和月报恢复出刊并补齐了创刊前的历史期数。同时修复了目录条目的显示问题、侧栏文案截断和日报生成异常的告警问题。"
+        "今天是上线的第二天。最大的变化是 YouTube 视频内容现在可以直接在站内阅读和翻译了，同时新增了无障碍和技术写作两个主题方向，信源继续扩充。",
+        "YouTube 视频转写功能上线。系统自动下载视频的英文字幕，按照说话人的停顿和句子完结来分段（不再是机械的固定行数），然后注入文章正文。精选文章自动翻译成中文，页面右上角可以在中文和英文原文之间切换。目前已有 15 个视频带完整转写和翻译，最长的达到 15 万字。每个转写文章开头都标注了「由 YouTube 自动语音识别生成，可能存在识别错误」，提醒读者注意质量。",
+        "新增了 5 个 YouTube 频道：欧盟委员会翻译总司的 Translating for Europe、Freelance Translator Academy、Freelanceverse、Interpreting and Language Learning with Alhan、Interprenet。前四个面向自由译员和口译员，内容涵盖职业成长、客户沟通和 AI 工具使用。",
+        "新增了无障碍和技术写作两个主题标签，以及对应的 6 个信源。无障碍方面有 Google 的 web.dev、Deque、WebKit 和 Chrome Developers 官方博客，覆盖 WCAG 标准、屏幕阅读器和口述影像的技术实现。技术写作方面有 Telerik Blogs，关注 API 文档和开发者文档的生产实践。主题页 `/topics/accessibility` 和 `/topics/tech-writing` 已经可以浏览。",
+        "Reddit 讨论从「最新发帖」切换到「热门讨论」模式，只收正在被大量讨论的帖子。同时新增了 r/translator（译员社区）和 r/interpretation（口译社区）两个版块，加上原有的三个，现在一共五个 Reddit 热门讨论源。"
       ]
     },
     {
-      "date": "2026-10-07",
-      "time": "08:00",
-      "kind": "公告",
-      "title": "网站上线",
+      "date": "2026-10-08",
+      "time": "12:01",
+      "kind": "优化",
+      "title": "修复隧道连接、文章日期和语言识别问题",
       "body": [
-        "用 AIHOT 开源框架搭起了这个站：自动盯住语言服务与翻译技术的信源、精选、把同一件事归到一起，每天出一份日报。"
+        "修复了网站无法访问的问题。Cloudflare 隧道的 QUIC 协议在某些网络环境下会超时，切换到 HTTP/2 协议后恢复正常。",
+        "修复了 GALA 新闻文章缺少发布日期的问题。11 篇文章没有时间信息，导致它们被当作历史文章处理，现在已补上抓取时间。",
+        "修复了 YouTube 文章的翻译问题。文章开头的中文标注（「自动字幕转写·…」）被系统误判为中文内容，导致翻译功能跳过了这些文章。现在已正确识别为英文正文。",
+        "将爬虫的 User-Agent 从「polite crawler」格式改为浏览器格式，以避免部分网站的防火墙误拦截。这一改动只影响请求头的写法，不影响网站的访问行为。"
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "time": "12:02",
+      "kind": "下线",
+      "title": "停用四个不可用的信源",
+      "body": [
+        "KUDO Blog、LocWorld 和 Phrase Blog 的 RSS 订阅地址已经不再返回内容（网站改版后移除了 RSS 功能），MultiLingual 网站启用了更严格的 Cloudflare 防护。这四个信源已停用，相关内容会通过其他渠道继续覆盖：KUDO 和 Phrase 有 X 账号在等激活，LocWorld 的 YouTube 频道已接入（暂停中，有新内容会恢复）。"
       ]
     }
   ]
