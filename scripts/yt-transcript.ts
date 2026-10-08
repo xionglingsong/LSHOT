@@ -46,7 +46,7 @@ function vttToText(vttPath: string): string {
 
 /** Extract video ID from YouTube URL. */
 function videoId(url: string): string | null {
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
   return m?.[1] ?? null;
 }
 
@@ -93,6 +93,7 @@ ${text}`;
     console.log(`  ✗ ${a.title.slice(0, 40)} | ${String(e).slice(0, 50)}`);
     if (existsSync(vttPath)) unlinkSync(vttPath);
   }
+  await new Promise(r => setTimeout(r, 4000)); // 避 429 限频
 }
 
 await stopBoss();
