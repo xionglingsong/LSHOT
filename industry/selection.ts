@@ -16,4 +16,9 @@ export const SELECTION = {
    * 其余用更便宜的“标题摘要翻译”。
    */
   understandFloor: 50,
+  /**
+   * 这些分类不受 understandFloor 限制，一律走完整内容理解（标题、摘要、锐评）。
+   * 论文是本行业最值得细读的一类，摘要里要给出锐评与引用，因此不降级到便宜的标题摘要翻译。
+   */
+  deepCategories: ["paper"] as string[],
 } as const;

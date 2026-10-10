@@ -43,6 +43,8 @@ export interface ItemSummary {
   originalTitle: string | null;
   summary: string | null;
   reason: string | null;
+  /** For research papers: a deterministic APA-style citation, null elsewhere. */
+  citation: string | null;
   source: SourceRef;
   links: { original: string };
   publishedAt: string | null;
@@ -57,7 +59,7 @@ export interface ItemSummary {
 }
 
 /** The fields rendered by a site feed card; full original text lives in the item detail. */
-export interface FeedItemSummary extends Pick<ItemSummary, "id" | "title" | "summary" | "reason" | "source" | "publishedAt" | "timelineAt" | "category" | "tags" | "score" | "selected" | "channel"> {
+export interface FeedItemSummary extends Pick<ItemSummary, "id" | "title" | "summary" | "reason" | "citation" | "source" | "publishedAt" | "timelineAt" | "category" | "tags" | "score" | "selected" | "channel"> {
   x: (Pick<XPostView, "authorName" | "handle" | "avatarUrl" | "avatarSrcSet" | "media"> & {
     quoted: Omit<NonNullable<XPostView["quoted"]>, "url"> | null;
   }) | null;

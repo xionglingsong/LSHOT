@@ -56,6 +56,8 @@ export function tierThreshold(tier: string): number | null {
 
 /** Unselected items above this mean are written like selected ones. */
 export const UNDERSTAND_FLOOR = SELECTION.understandFloor;
+/** Categories that always get the deep reading, whatever the score (papers: 摘要要带锐评). */
+export const DEEP_CATEGORIES = new Set<string>(SELECTION.deepCategories);
 
 /**
  * Call parameters per score model. The GLM scorer runs at temperature 1 with high reasoning (the model
@@ -419,10 +421,12 @@ export async function runAnalysis(a: AnalyzeInputArticle, opts: StepOpts = {}): 
     const near = sum !== null && (sum >= scores!.threshold * SCORE_CALLS || sum > UNDERSTAND_FLOOR * SCORE_CALLS);
     const s = await structure;
     if ("error" in s) throw s.error;
+    // A category that always wants the deep reading (papers) skips the understand floor.
+    const deep = s.value.category !== null && DEEP_CATEGORIES.has(s.value.category);
     const original = originalPostCopy(a.xPost, a.url);
     const writing: NonNullable<AnalysisRun["writing"]> = original
       ? { kind: "verbatim", model: null, titleZh: original.title, summaryZh: original.summary ?? "", reasonZh: null, receiptIds: [], reused: true }
-      : (near ? await runUnderstand(a, opts) : null) ?? (await runSummarize(a, opts));
+      : (near || deep ? await runUnderstand(a, opts) : null) ?? (await runSummarize(a, opts));
     return { prefilter, scores, writing, structure: s.value };
   } finally {
     // A score/writing error or deploy must not let the job finish while a paid structure request

@@ -29,6 +29,7 @@ export interface FeedItemProps {
 
 export const FeedItem = memo(function FeedItem({ item, group, filters, read = false, onOpen, showTags = false, at }: FeedItemProps) {
   const isX = item.channel === "x" && !!item.x;
+  const isPaper = item.category === "paper";
   const open = () => {
     rememberPreview(item);
     onOpen?.(item.id);
@@ -76,7 +77,30 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
               {item.title}
             </IntentLink>
           </h3>
-          {item.summary && <p className="mt-1 line-clamp-2 text-[14.5px] leading-[1.7] text-ink-3 lg:mt-2 lg:line-clamp-3 lg:text-[15px] lg:leading-[1.75]">{item.summary}</p>}
+          {isPaper ? (
+            <div className="mt-2 space-y-2">
+              {item.summary && (
+                <div>
+                  <div className="text-[11px] font-semibold tracking-wide text-ink-4">内容简介</div>
+                  <p className="mt-0.5 line-clamp-3 text-[14.5px] leading-[1.7] text-ink-3 lg:text-[15px] lg:leading-[1.75]">{item.summary}</p>
+                </div>
+              )}
+              {item.reason && (
+                <div>
+                  <div className="text-[11px] font-semibold tracking-wide text-ink-4">锐评</div>
+                  <p className="mt-0.5 line-clamp-3 text-[14.5px] leading-[1.7] text-ink-3 lg:text-[15px] lg:leading-[1.75]">{item.reason}</p>
+                </div>
+              )}
+              {item.citation && (
+                <div className="lg:border-t lg:border-line-soft lg:pt-2">
+                  <div className="text-[11px] font-semibold tracking-wide text-ink-4">引用</div>
+                  <p className="mt-0.5 line-clamp-3 break-words text-[12.5px] leading-[1.7] text-ink-4 lg:line-clamp-none">{item.citation}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            item.summary && <p className="mt-1 line-clamp-2 text-[14.5px] leading-[1.7] text-ink-3 lg:mt-2 lg:line-clamp-3 lg:text-[15px] lg:leading-[1.75]">{item.summary}</p>
+          )}
         </>
       )}
 
@@ -112,7 +136,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
         </div>
       )}
 
-      {item.reason && (
+      {item.reason && !isPaper && (
         <div className="mt-1 lg:mt-3 lg:border-t lg:border-line-soft lg:pt-3">
           <p className="line-clamp-1 text-[13px] leading-[1.65] text-note lg:line-clamp-none lg:leading-[1.75]">{`${ITEM_COPY.reasonLabel}：`}{item.reason}</p>
         </div>

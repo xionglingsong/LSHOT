@@ -143,6 +143,40 @@ export function showsPost(row: { channel: string; body_mode: string }): boolean 
   return row.channel === "x" && (!POLICY.xPostIsFullText || row.body_mode === "full");
 }
 
+/**
+ * A real byline, else null. Poster handles ("andrasasarman", "/u/…", "@…") and literal
+ * "null"/"undefined" values are not author names: a name has a space, a real one here.
+ */
+function usableAuthors(author: string | null): string | null {
+  if (!author) return null;
+  const a = author.trim();
+  if (!a || /^(null|undefined|none)$/i.test(a)) return null;
+  if (a.startsWith("/u/") || a.startsWith("u/") || a.startsWith("@")) return null;
+  if (!a.includes(" ")) return null;
+  return a;
+}
+
+/** Split a feed title's "[Journal Name]" prefix out as the venue (proper APA source). */
+function splitVenue(title: string): { title: string; venue: string | null } {
+  const m = title.match(/^\s*\[([^\]]+)\]\s*(.*)$/);
+  return m ? { title: m[2]!.trim(), venue: m[1]!.trim() } : { title: title.trim(), venue: null };
+}
+
+/** A deterministic APA-style citation for research papers: Author (Year). Title. Venue. URL. */
+export function paperCitation(row: ItemRow): string | null {
+  if (row.category !== "paper") return null;
+  const raw = (row.original_title ?? row.title ?? "").trim();
+  if (!raw) return null;
+  const { title, venue } = splitVenue(raw);
+  if (!title) return null;
+  const year = row.published_at?.getUTCFullYear() ?? row.discovered_at.getUTCFullYear();
+  const authors = usableAuthors(row.author);
+  const url = (row.url ?? "").trim();
+  const head = authors ? `${authors} (${year}). ${title}.` : `${title} (${year}).`;
+  const tail = [venue, url].filter(Boolean).join(". ");
+  return tail ? `${head} ${tail}` : head;
+}
+
 /** The shared public article; its X post is added as each answer shows it. */
 export function toItemSummary(row: ItemRow): ItemSummary {
   return {
@@ -150,7 +184,8 @@ export function toItemSummary(row: ItemRow): ItemSummary {
     title: row.title,
     originalTitle: row.original_title,
     summary: row.summary,
-    reason: row.selected ? row.reason : null,
+    reason: row.selected || row.category === "paper" ? row.reason : null,
+    citation: paperCitation(row),
     source: { name: publicSourceName(row.source_name) },
     links: { original: row.url },
     publishedAt: row.published_at?.toISOString() ?? null,
@@ -170,7 +205,7 @@ export function toFeedItemSummary(row: ItemRow): FeedItemSummary {
   const item = toItemSummary(row);
   const x = showsPost(row) ? xView(row, true) : null;
   return {
-    id: item.id, title: item.title, summary: item.summary ?? (x?.text || null), reason: item.reason,
+    id: item.id, title: item.title, summary: item.summary ?? (x?.text || null), reason: item.reason, citation: item.citation,
     source: item.source, publishedAt: item.publishedAt, timelineAt: item.timelineAt,
     category: item.category, tags: item.tags, score: item.score, selected: item.selected, channel: item.channel,
     x: x ? {

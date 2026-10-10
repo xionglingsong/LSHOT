@@ -170,6 +170,7 @@ export default function ItemPage() {
 function ItemPreview({ preview }: { preview: FeedItemSummary }) {
   const [toast, setToast] = useToast();
   const isX = preview.channel === "x" && !!preview.x;
+  const isPaper = preview.category === "paper";
   // Without a reliable date from the original, the card's time is when it was collected, and says so.
   const shownAt = preview.publishedAt ?? preview.timelineAt;
   return (
@@ -198,8 +199,14 @@ function ItemPreview({ preview }: { preview: FeedItemSummary }) {
         )}
         {preview.reason && (
           <section className="mt-6 border-t border-line pt-4">
-            <div className="mb-1 text-[12px] font-semibold text-ink-3">{ITEM_COPY.reasonLabel}</div>
+            <div className="mb-1 text-[12px] font-semibold text-ink-3">{isPaper ? "锐评" : ITEM_COPY.reasonLabel}</div>
             <p className="text-[15px] leading-[1.75] text-ink-2">{preview.reason}</p>
+          </section>
+        )}
+        {isPaper && preview.citation && (
+          <section className="mt-6 border-t border-line pt-4">
+            <div className="mb-1 text-[12px] font-semibold text-ink-3">引用</div>
+            <p className="break-words text-[13px] leading-[1.7] text-ink-3">{preview.citation}</p>
           </section>
         )}
         <div className="mt-9 space-y-3 border-t border-line pt-6" aria-hidden="true">
@@ -282,6 +289,7 @@ function ItemView({ item }: { item: SiteItemDetail }) {
   const bodyHtml = lang === "zh" ? (item.body?.zh ?? item.body?.original) : (item.body?.original ?? item.body?.zh);
   const bodyLabel = !item.body ? null : lang === "zh" && item.body.zhKind === "translation" ? "正文 · AI 翻译" : lang === "original" && hasTranslation ? "正文 · 原文" : "正文";
   const isX = item.channel === "x" && !!item.x;
+  const isPaper = item.category === "paper";
   // Without a reliable date from the original, the time shown is when it was collected, labelled as such.
   const shownAt = item.publishedAt ?? item.discoveredAt;
   const timeLabel = item.publishedAt ? "发布时间" : "收录时间";
@@ -385,7 +393,7 @@ function ItemView({ item }: { item: SiteItemDetail }) {
   );
   const notes = (
     <>
-      {item.reason && !summaryOnly ? (
+      {item.reason && !summaryOnly && !isPaper ? (
         <RailSection title={ITEM_COPY.reasonLabel}>
           {verdict && <div className="mb-3">{verdict}</div>}
           <p className="text-[13.5px] leading-[1.8] text-ink-2">{item.reason}</p>
@@ -475,18 +483,43 @@ function ItemView({ item }: { item: SiteItemDetail }) {
           {!isX && <h1 data-page-title="" className="text-[26px] font-bold leading-[1.38] tracking-[-0.01em] text-ink lg:text-[32px] lg:leading-[1.34] xl:text-[36px] xl:leading-[1.3]">{item.title}</h1>}
           {!isX && item.originalTitle && <p className="mt-2.5 text-[14px] leading-relaxed text-ink-4">{item.originalTitle}</p>}
 
-          {item.summary && (!isX || item.summary.replace(/\s+/g, " ").trim() !== item.title) && (
-            <section className={isX ? "mt-4" : "mt-7 xl:mt-8"}>
-              <div className="mb-2 text-[12px] font-semibold text-accent">{summaryOnly ? "摘要" : "AI 导读"}</div>
-              <p className="text-[18px] leading-[1.7] text-ink xl:text-[20px] xl:leading-[1.7]">{item.summary}</p>
-            </section>
-          )}
+          {isPaper ? (
+            <>
+              {item.summary && (
+                <section className="mt-7 xl:mt-8">
+                  <div className="mb-2 text-[12px] font-semibold text-accent">内容简介</div>
+                  <p className="text-[18px] leading-[1.7] text-ink xl:text-[20px] xl:leading-[1.7]">{item.summary}</p>
+                </section>
+              )}
+              {item.reason && (
+                <section className="mt-6 border-t border-line pt-4">
+                  <div className="mb-2 text-[12px] font-semibold text-ink-3">锐评</div>
+                  <p className="text-[16px] leading-[1.75] text-ink-2">{item.reason}</p>
+                </section>
+              )}
+              {item.citation && (
+                <section className="mt-6 border-t border-line pt-4">
+                  <div className="mb-2 text-[12px] font-semibold text-ink-3">引用</div>
+                  <p className="break-words text-[14px] leading-[1.75] text-ink-3">{item.citation}</p>
+                </section>
+              )}
+            </>
+          ) : (
+            <>
+              {item.summary && (!isX || item.summary.replace(/\s+/g, " ").trim() !== item.title) && (
+                <section className={isX ? "mt-4" : "mt-7 xl:mt-8"}>
+                  <div className="mb-2 text-[12px] font-semibold text-accent">{summaryOnly ? "摘要" : "AI 导读"}</div>
+                  <p className="text-[18px] leading-[1.7] text-ink xl:text-[20px] xl:leading-[1.7]">{item.summary}</p>
+                </section>
+              )}
 
-          {item.reason && !summaryOnly && (
-            <section className="mt-6 border-t border-line pt-4 lg:hidden">
-              <div className="mb-1 text-[12px] font-semibold text-ink-3">{ITEM_COPY.reasonLabel}</div>
-              <p className="text-[15px] leading-[1.75] text-ink-2">{item.reason}</p>
-            </section>
+              {item.reason && !summaryOnly && (
+                <section className="mt-6 border-t border-line pt-4 lg:hidden">
+                  <div className="mb-1 text-[12px] font-semibold text-ink-3">{ITEM_COPY.reasonLabel}</div>
+                  <p className="text-[15px] leading-[1.75] text-ink-2">{item.reason}</p>
+                </section>
+              )}
+            </>
           )}
 
           {item.sameEvent && (
