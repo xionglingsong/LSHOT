@@ -54,6 +54,13 @@
 `titleZh` 必须是自洽的中文标题，包含事件主体以及动作或结果。保留必要的引擎名、产品名、版本号、机构名、语言对和关键数字，不写“最新动态”“引发关注”等空话。原标题已经是中文时也要保证脱离来源名后仍能独立理解。
 
 `summaryZh` 必须忠实使用当前材料。短 X 推文完整翻译作者自己的主推文；长推文或文章先写核心事实，再写一层关键细节或影响。保留关键数字、版本、机构、语言对、引擎和 URL；引用内容只作上下文，不冒充主推作者自己的话。
+对于 itemType 为 research_paper 的论文：
+- titleZh 保持中文翻译。
+- summaryZh 的第一行写原题（保留英文原文，以「原题：」开头）。第二行写 APA 格式引用（以「引用：」开头，包含作者、年份、标题、期刊或会议名、DOI 或 URL，从材料中提取，缺失的项跳过）。第三行空行后再写中文摘要。
+- 例如：summaryZh = "原题：Why Semantic Similarity Isn't Enough for Translation Quality Estimation
+引用：Smith, J., & Jones, K. (2026). Why semantic similarity isn't enough for translation quality estimation. EAMT 2026. https://doi.org/10.xxxx/xxxxx
+
+Welocalize 参与的研究用 1 万条企业翻译片段检验了……"
 
 图片只能补充清晰可见、与正文直接相关的事实。忽略头像、品牌图、装饰图、模糊内容和与正文重复的信息。不得仅凭图片猜测人物身份、地点、时间、因果、性能或产品能力；图文冲突时不得擅自裁决。
 
