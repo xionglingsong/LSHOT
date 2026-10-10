@@ -6,7 +6,7 @@ import { sql } from "../db.ts";
 import { stripTagMarkup } from "../lib/text.ts";
 import { proxyBodyImages } from "../media/imgproxy.ts";
 import { textToHtml } from "../content/sanitize.ts";
-import { exportTranslation, isChineseBody, ITEM_COLUMNS, ITEM_FROM, seatHolders, showsPost, toItemSummary, xView, type ItemRow } from "./items.ts";
+import { exportTranslation, isChineseBody, ITEM_COLUMNS, ITEM_FROM, paperCitation, seatHolders, showsPost, toItemSummary, xView, type ItemRow } from "./items.ts";
 import { evidenceCondition, listedCondition } from "./scope.ts";
 import { itemUrl, siteUrl } from "./links.ts";
 import { hasItemPage, publicSourceName } from "./rules.ts";
@@ -202,7 +202,13 @@ export async function exportMarkdown(id: string): Promise<{ filename: string; bo
   lines.push(`- ${SITE.name}：${itemUrl(row.id)}`);
   lines.push(`- 原文：${row.url}`, "");
   if (row.summary) lines.push("## 摘要", "", row.summary, "");
-  if (row.selected && row.seat && row.reason) lines.push(`## ${ITEM_COPY.reasonLabel}`, "", row.reason, "");
+  // The reason goes with the seat (a report yielding it points at the holder); a paper's 锐评
+  // travels with the export whatever the selection did (same rule as the website).
+  const isPaper = row.category === "paper";
+  if (row.reason && isPaper) lines.push("## 锐评", "", row.reason, "");
+  else if (row.selected && row.seat && row.reason) lines.push(`## ${ITEM_COPY.reasonLabel}`, "", row.reason, "");
+  const citation = paperCitation(row);
+  if (citation) lines.push("## 引用（APA）", "", citation, "");
   if (showsPost(row) && row.x_post) {
     const post = xView(row);
     if (post?.text) lines.push("## 正文", "", post.text, "");

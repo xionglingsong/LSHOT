@@ -4,11 +4,19 @@
 // by the tests that need them, and the push valves stay off. npm test gives each database test file its own copy of
 // the database (databases.ts).
 import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 import http from "node:http";
 import { beijingAt } from "@aihot/contracts/time";
 import { EDITION_TIMES } from "@aihot/site";
 import { DEFAULTS, PRESETS } from "@aihot/site/models";
 
+// A developer shell that exports NODE_ENV=production would otherwise derive environmentName
+// "production" and switch off the dev-admin sign-in the tests use (config.ts).
+process.env.AIHOT_ENVIRONMENT ??= "test";
+// The embedded Postgres distribution ships no pg_dump/pg_restore; this machine keeps built ones
+// next to the checkout (~/mydev/pg18-tools). An explicit AIHOT_PG_BIN always wins.
+process.env.AIHOT_PG_BIN ||= path.join(fileURLToPath(new URL("../..", import.meta.url)), "pg18-tools");
 const database = new URL(process.env.DATABASE_URL ?? "postgres://unset/unset").pathname.slice(1);
 if (!/_(test|ci)$/.test(database)) {
   throw new Error(`Invariant tests write rows: point DATABASE_URL at a throwaway database named *_test or *_ci (got "${database}")`);

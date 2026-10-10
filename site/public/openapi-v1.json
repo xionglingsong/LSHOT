@@ -3436,6 +3436,13 @@
               "null"
             ]
           },
+          "citation": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A research paper's strict APA citation (authors, year, original title, venue, URL), generated deterministically from the record; null on everything else."
+          },
           "source": {
             "type": "object",
             "required": [
@@ -3501,7 +3508,7 @@
               "string",
               "null"
             ],
-            "description": "Reader-facing recommendation reason, the same text shown as 推荐理由 on the website. Always present on /api/v1/items; null when the item is not selected or has no reader-facing reason. Selected snapshot and changes do not include this field yet."
+            "description": "Reader-facing recommendation reason, the same text shown as 推荐理由 on the website (锐评 for a research paper). Always present on /api/v1/items; a paper keeps it even when not selected; null when the item is not selected (and not a paper) or has no reader-facing reason. Selected snapshot and changes do not include this field yet."
           },
           "attribution": {
             "$ref": "#/components/schemas/Attribution"

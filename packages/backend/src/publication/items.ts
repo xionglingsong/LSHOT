@@ -3,6 +3,7 @@
 import { CATEGORY_KEYS, toPublicApiCategory, type CategoryKey, type ChannelKey, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
 import type { FeedItemSummary, ItemSummary, MediaView, XPostView } from "@aihot/contracts/site";
 import { POLICY } from "@aihot/site";
+import { ENTITIES, PUBLISHER_DOMAINS } from "@aihot/industry/taxonomy";
 import { sql, type Db } from "../db.ts";
 import { isEmptyOrLinkOnly } from "../content/posts.ts";
 import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
@@ -53,12 +54,12 @@ export const ITEM_COLUMNS = sql`
   CASE WHEN p.channel = 'x' THEN tr.body_text END AS zh_text, qt.text_zh AS quoted_zh`;
 
 /** Public API listings never render article bodies, X media or story metadata. */
-export type ApiItemRow = Pick<ItemRow, "id" | "title" | "original_title" | "summary" | "source_name" | "url" | "published_at" | "discovered_at" | "category" | "score" | "selected" | "reason">;
+export type ApiItemRow = Pick<ItemRow, "id" | "title" | "original_title" | "summary" | "source_name" | "url" | "published_at" | "discovered_at" | "category" | "score" | "selected" | "reason" | "author">;
 /** `selected` is the machine meaning: the report holds its fact's selected seat (scope.ts seatedCondition). */
 export const API_ITEM_COLUMNS = sql`
   p.article_id AS id, p.title, p.original_title, p.summary, s.name AS source_name, p.url,
-  p.published_at, p.discovered_at, p.category, p.score, (p.selected AND p.seat) AS selected, p.reason`;
-export const API_ITEM_FROM = sql`FROM publications p JOIN sources s ON s.id = p.source_id`;
+  p.published_at, p.discovered_at, p.category, p.score, (p.selected AND p.seat) AS selected, p.reason, a.author`;
+export const API_ITEM_FROM = sql`FROM publications p JOIN sources s ON s.id = p.source_id JOIN articles a ON a.id = p.article_id`;
 
 /** A translation of an older revision is left out: the original changed after it (the worker translates it again). */
 export const ITEM_FROM = sql`
@@ -156,13 +157,52 @@ function usableAuthors(author: string | null): string | null {
   return a;
 }
 
+/**
+ * A byline of given-first names ("Monika Chwalczuk") as strict APA authors: "Chwalczuk, M., &
+ * García-Beyaert, S.". The last token is the surname, the rest are given names reduced to
+ * initials; leading lowercase particles ("van", "de", "der", "la", "bin", "al-") stay with the
+ * surname. A single-token name is an organization ("Welocalize") or a mononym and stays as is.
+ */
+function apaAuthors(byline: string): string {
+  const names = byline.split(/\s*(?:,|;| and | & )\s*/i).map((n) => n.replace(/[.:;,\s]+$/, "").trim()).filter(Boolean);
+  const toInitials = (given: string) => given.split(/\s+/).filter(Boolean).map((g) => `${g[0]!.toUpperCase()}.`).join(" ");
+  const PARTICLE = /^(?:[\u00c0-\u024f]?[a-z\u00df-\u00ff]+|bin|bint|al|el|da|de|del|della|di|do|dos|der|den|van|von|vander|la|le|les|du|des|mac|mc|san|santa|ter|ten|op|zu|zur|af|av|ibn|abu)$/u;
+  const one = (name: string): string => {
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length < 2) return name; // an organization or a mononym stays as printed
+    let cut = parts.length - 1;
+    while (cut > 1 && PARTICLE.test(parts[cut - 1]!)) cut -= 1; // "van der Berg" keeps its particles
+    const surname = parts.slice(cut).join(" ");
+    const given = parts.slice(0, cut).join(" ");
+    return `${surname}, ${toInitials(given)}`;
+  };
+  const list = names.map(one);
+  if (list.length > 1) return `${list.slice(0, -1).join(", ")}, & ${list.at(-1)}`;
+  return list.join(", ");
+}
+
 /** Split a feed title's "[Journal Name]" prefix out as the venue (proper APA source). */
 function splitVenue(title: string): { title: string; venue: string | null } {
   const m = title.match(/^\s*\[([^\]]+)\]\s*(.*)$/);
   return m ? { title: m[2]!.trim(), venue: m[1]!.trim() } : { title: title.trim(), venue: null };
 }
 
-/** A deterministic APA-style citation for research papers: Author (Year). Title. Venue. URL. */
+/**
+ * The publisher a paper's URL belongs to, by the industry pack's domain table: when a paper has no
+ * personal byline (a company blog post about its own study), APA cites the organization as author.
+ */
+function publisherOf(url: string): string | null {
+  if (!url) return null;
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    const hit = PUBLISHER_DOMAINS.find((entry) => entry.domains.some((d) => host === d || host.endsWith(`.${d}`)));
+    return hit ? ENTITIES[hit.entityId]?.name ?? null : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A deterministic strict APA citation for research papers: Surname, G. (Year). Title. Venue. URL. */
 export function paperCitation(row: ItemRow): string | null {
   if (row.category !== "paper") return null;
   const raw = (row.original_title ?? row.title ?? "").trim();
@@ -170,10 +210,10 @@ export function paperCitation(row: ItemRow): string | null {
   const { title, venue } = splitVenue(raw);
   if (!title) return null;
   const year = row.published_at?.getUTCFullYear() ?? row.discovered_at.getUTCFullYear();
-  const authors = usableAuthors(row.author);
-  const url = (row.url ?? "").trim();
-  const head = authors ? `${authors} (${year}). ${title}.` : `${title} (${year}).`;
-  const tail = [venue, url].filter(Boolean).join(". ");
+  const byline = usableAuthors(row.author);
+  const author = byline ? apaAuthors(byline) : publisherOf(row.url ?? "");
+  const head = author ? `${author} (${year}). ${title}.` : `${title} (${year}).`;
+  const tail = [venue, (row.url ?? "").trim()].filter(Boolean).join(". ");
   return tail ? `${head} ${tail}` : head;
 }
 

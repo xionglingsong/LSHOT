@@ -1,7 +1,7 @@
 // Database and file backups: a verified custom-format dump plus the uploaded files, sent
 // to the existing object store (Tencent COS through its S3-compatible API, AWS Signature V4) under
 // daily/ (Sundays also weekly/, the 1st also monthly/). A few local copies are kept.
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { createHash, createHmac } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { mkdir, readdir, rm, stat } from "node:fs/promises";
@@ -13,6 +13,28 @@ import { screenshotsForwarded } from "./feedback.ts";
 
 const run = promisify(execFile);
 const KEEP_LOCAL = 3;
+
+/**
+ * pg_dump and pg_restore are not part of the embedded-postgres distribution (initdb/pg_ctl/postgres
+ * only). A deployment points AIHOT_PG_BIN at a directory holding them (a server install, or a local
+ * build); without one, backups keep everything else running and report the missing tool as the
+ * other failure modes do.
+ */
+export function pgTool(name: "pg_dump" | "pg_restore"): string {
+  const dir = process.env.AIHOT_PG_BIN?.trim();
+  return dir ? path.join(dir, name) : name;
+}
+
+/** Whether the database tools this deployment needs are on the resolved path. */
+export function pgToolsAvailable(): boolean {
+  try {
+    execFileSync(pgTool("pg_dump"), ["--version"], { stdio: "ignore" });
+    execFileSync(pgTool("pg_restore"), ["--version"], { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 interface Store {
   secretId: string;
@@ -82,9 +104,17 @@ export async function runBackup(now = new Date()) {
   // Named after the database ("news_db" → news-db-…), so two databases backed up into one store stay apart.
   const name = sql.options.database.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const dump = path.join(dir, `${name}-${stamp}.dump`);
-  await run("pg_dump", ["--format=custom", "--compress=6", "--no-owner", "--file", dump, config.databaseUrl], { maxBuffer: 16 * 1024 * 1024 });
+  // --compress=6 needs a zlib-enabled pg_dump; a tool without it still writes a valid (larger) archive.
+  const dumpArgs = ["--format=custom", "--no-owner", "--file", dump, config.databaseUrl];
+  try {
+    execFileSync(pgTool("pg_dump"), ["--compress=6", "--version"], { stdio: "ignore" });
+    dumpArgs.splice(1, 0, "--compress=6");
+  } catch {
+    // unsupported compression: proceed without it
+  }
+  await run(pgTool("pg_dump"), dumpArgs, { maxBuffer: 16 * 1024 * 1024 });
   // Verify before shipping: the archive must list cleanly.
-  await run("pg_restore", ["--list", dump], { maxBuffer: 64 * 1024 * 1024 });
+  await run(pgTool("pg_restore"), ["--list", dump], { maxBuffer: 64 * 1024 * 1024 });
   const files = path.join(dir, `${name}-files-${stamp}.tar.gz`);
   // An empty archive only when there is nothing to keep. A failure to read or pack existing files is
   // tried once more and otherwise reported: the database dump still ships, but the run fails.

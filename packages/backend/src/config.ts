@@ -51,6 +51,8 @@ export const config = {
   credentialsDir: credentialsDir ? path.resolve(REPO_ROOT, credentialsDir) : null,
   dataDir: str("AIHOT_DATA_DIR", path.join(REPO_ROOT, ".data")),
   // Name of this deployment in alerts ("production" sends them without a prefix).
+  // The dev-admin gate (admin/auth.ts) reads this: a developer shell that exports NODE_ENV=production
+  // needs AIHOT_ENVIRONMENT set explicitly (the tests set it to "test") or dev sign-in stays off.
   environmentName: str("AIHOT_ENVIRONMENT", isProduction ? "production" : "development"),
   // External-action valve: off unless the environment turns it on, like COLLECT_ENABLED (read by the
   // worker).

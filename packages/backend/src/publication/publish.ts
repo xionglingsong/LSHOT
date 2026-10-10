@@ -9,6 +9,7 @@ import { collapseWhitespace } from "../lib/text.ts";
 import type { XPostData } from "../content/materials.ts";
 import { originalPostCopy } from "../content/posts.ts";
 import { itemUrl } from "./links.ts";
+import { paperCitation } from "./items.ts";
 import { pickRepresentative, REPRESENTATIVE_COLUMNS, type RepresentativeIdentity } from "./representative.ts";
 import { enqueue, QUEUES, shutdownSignal } from "../jobs/queue.ts";
 import { emit } from "../modules.ts";
@@ -93,6 +94,8 @@ export interface V1ItemPayload {
   title: string;
   originalTitle: string | null;
   summary: string | null;
+  /** A research paper's strict APA citation; null on everything else. */
+  citation: string | null;
   source: { name: string };
   links: { aihot: string; original: string };
   publishedAt: string | null;
@@ -133,13 +136,22 @@ function round1(n: number | null): number | null {
 export function v1Payload(p: {
   articleId: string; title: string; originalTitle: string | null; summary: string | null; sourceName: string; url: string;
   publishedAt: Date | null; discoveredAt: Date; category: string | null; score: number | null; selected: boolean; reason: string | null;
+  author?: string | null;
 }): V1ItemPayload {
   const aihot = itemUrl(p.articleId);
+  const citation = paperCitation({
+    id: p.articleId, title: p.title, original_title: p.originalTitle, summary: p.summary, reason: p.reason,
+    category: p.category, tags: [], score: p.score, selected: p.selected, seat: true, channel: "news", url: p.url,
+    published_at: p.publishedAt, discovered_at: p.discoveredAt, timeline_at: p.discoveredAt, visibility: "public",
+    body_mode: "summary", indexable: true, fact_id: null, source_name: p.sourceName, x_post: null,
+    author: p.author ?? null, language: null, story_public_id: null, story_title: null, zh_text: null, quoted_zh: null,
+  } as never);
   return {
     id: p.articleId,
     title: p.title,
     originalTitle: p.originalTitle,
     summary: p.summary,
+    citation,
     source: { name: p.sourceName },
     links: { aihot, original: p.url },
     publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
@@ -147,7 +159,7 @@ export function v1Payload(p: {
     category: toPublicApiCategory(p.category),
     score: p.score === null ? null : Math.round(p.score),
     selected: p.selected,
-    reason: p.selected ? p.reason : null,
+    reason: p.selected || p.category === "paper" ? p.reason : null,
     attribution: { name: SITE.name, url: aihot },
   };
 }
@@ -194,16 +206,18 @@ async function settleSeats(tx: Tx, factId: number | null, self: string | null, n
 async function syncLedger(tx: Tx, articleId: string, now: Date): Promise<"upsert" | "remove" | null> {
   const [p] = await tx<Array<{ selected: boolean; visibility: string; seat: boolean; title: string; original_title: string | null; summary: string | null;
     url: string; published_at: Date | null; discovered_at: Date; category: string | null; score: string | number | null; reason: string | null;
-    source_name: string }>>`
+    source_name: string; author: string | null }>>`
     SELECT p.selected, p.visibility, p.seat, p.title, p.original_title, p.summary, p.url, p.published_at, p.discovered_at, p.category,
-           p.score, p.reason, s.name AS source_name
-    FROM publications p JOIN sources s ON s.id = p.source_id WHERE p.article_id = ${articleId}`;
+           p.score, p.reason, s.name AS source_name, a.author
+    FROM publications p JOIN sources s ON s.id = p.source_id JOIN articles a ON a.id = p.article_id
+    WHERE p.article_id = ${articleId}`;
   if (!p) return null;
   const [state] = await tx<{ in_set: boolean; payload_hash: string | null }[]>`SELECT in_set, payload_hash FROM selected_state WHERE article_id = ${articleId}`;
   if (p.selected && p.visibility === "public" && p.seat) {
     const payload = v1Payload({
       articleId, title: p.title, originalTitle: p.original_title, summary: p.summary, sourceName: p.source_name, url: p.url,
       publishedAt: p.published_at, discoveredAt: p.discovered_at, category: p.category, score: p.score === null ? null : Number(p.score), selected: true, reason: p.reason,
+      author: p.author,
     });
     const payloadHash = sha256(stableJson(payload));
     if (state?.in_set && state.payload_hash === payloadHash) return null;

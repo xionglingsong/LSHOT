@@ -14,7 +14,7 @@ export const CATEGORIES = [
   { key: "engine", label: "引擎", feedLabel: "翻译与语音引擎", section: "引擎发布/更新", guide: "机器翻译引擎、翻译大模型、自动语音识别、语音合成、语音同传等核心技术本身的发布、版本、能力或价格变化，以及既有评测基准上的成绩。公布一次评测成绩不是发布新基准，也不是教程。" },
   { key: "product", label: "产品", feedLabel: "工具与产品", section: "产品发布/更新", guide: "可使用的翻译工具、CAT/TMS 平台、口译服务平台、翻译 API、桌面客户端与集成组件的发布更新。引擎厂商发布的翻译 API、桌面客户端仍是产品，不能因为厂商名归成引擎。" },
   { key: "industry", label: "行业", feedLabel: "行业动态", section: "行业动态", guide: "已发生的语言服务商与厂商的经营、财报、融资并购、人事、合作、诉讼、政策、客户数据泄露与真实质量事故及调查进展。新闻由当事方发帖、带有态度，也不因此变成观点。" },
-  { key: "paper", label: "论文", feedLabel: "论文", section: "论文研究", guide: "以新研究方法、实验设计与发现为核心的论文、技术报告、新评测基准或评测数据集（如 WMT、IWSLT）。系统性翻译质量评估实验属于研究；既有基准上的成绩归引擎，真实事故的新闻调查归行业。" },
+  { key: "paper", label: "论文", feedLabel: "论文", section: "论文研究", guide: "以新研究方法、实验设计与发现为核心的论文、技术报告、新评测基准或评测数据集（如 WMT、IWSLT），正文须能指认研究出处（作者、机构或 DOI/会议/期刊/arXiv 等收录场地之一）。系统性翻译质量评估实验属于研究；既有基准上的成绩归引擎，真实事故的新闻调查归行业。社交平台帖子、论坛讨论与只转述研究的评论不归论文：讨论归观点，做法归教程，动态归行业。" },
   { key: "tip", label: "教程", section: "技巧与观点", guide: "读者可以照着使用的方法、提示词、译后编辑流程、术语管理实践、CAT 工具用法与技术讲解。重点是可复用的做法；单纯发布工具归产品，只有态度和预测而无做法归观点。", commentary: true },
   { key: "opinion", label: "观点", section: "技巧与观点", guide: "重点是作者的解释、判断、主张、预测、评论或访谈观点，比如机器翻译会不会取代译员、AI 时代语言服务市场走向的判断。讨论市场不自动归行业，作者是名人不自动归观点。", commentary: true },
 ] as const satisfies ReadonlyArray<{ key: string; label: string; feedLabel?: string; section: string; guide: string; commentary?: true }>;

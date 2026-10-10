@@ -30,7 +30,7 @@ export function rowToV1(row: ApiItemRow): V1ItemPayload {
   return v1Payload({
     articleId: row.id, title: row.title, originalTitle: row.original_title, summary: row.summary, sourceName: row.source_name,
     url: row.url, publishedAt: row.published_at, discoveredAt: row.discovered_at, category: row.category,
-    score: row.score === null ? null : Number(row.score), selected: row.selected, reason: row.reason,
+    score: row.score === null ? null : Number(row.score), selected: row.selected, reason: row.reason, author: row.author,
   });
 }
 

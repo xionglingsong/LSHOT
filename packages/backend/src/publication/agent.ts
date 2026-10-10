@@ -47,6 +47,7 @@ function itemLines(items: V1ItemPayload[]): string[] {
     `   ${[publicSourceName(it.source.name), it.publishedAt ? `发布于 ${stamp(it.publishedAt)}` : `${SITE.name} 收录于 ${stamp(it.discoveredAt)}`, category(it.category)].filter(Boolean).join(" · ")}`,
     ...(it.summary ? [`   摘要：${it.summary}`] : []),
     ...(it.reason ? [`   ${ITEM_COPY.reasonLabel}：${it.reason}`] : []),
+    ...(it.citation ? [`   引用：${it.citation}`] : []),
     `   原文：${it.links.original}`,
     "",
   ]);

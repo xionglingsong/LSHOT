@@ -14,7 +14,7 @@ import { promisify } from "node:util";
 import sharp from "sharp";
 import { config } from "@aihot/backend/config";
 import { closeDb, sql } from "@aihot/backend/db";
-import { runBackup } from "@aihot/backend/operations/backup";
+import { pgTool, runBackup } from "@aihot/backend/operations/backup";
 import { submitFeedback } from "@aihot/backend/operations/feedback";
 
 const run = promisify(execFile);
@@ -96,7 +96,7 @@ test("a real paired restore opens a feedback screenshot when forwarding is disab
   databases.add(name);
   const restoredUrl = new URL(config.databaseUrl);
   restoredUrl.pathname = `/${name}`;
-  await run("pg_restore", ["--exit-on-error", "--no-owner", "--dbname", restoredUrl.href, dumpPath], { maxBuffer: 16 * 1024 * 1024 });
+  await run(pgTool("pg_restore"), ["--exit-on-error", "--no-owner", "--dbname", restoredUrl.href, dumpPath], { maxBuffer: 16 * 1024 * 1024 });
   // A new process sees only the restored database and folder, never the original screenshot.
   await run(process.execPath, ["--input-type=module", "--eval", `
     import assert from "node:assert/strict";
