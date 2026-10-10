@@ -6,7 +6,7 @@ import { sql } from "../db.ts";
 import { stripTagMarkup } from "../lib/text.ts";
 import { proxyBodyImages } from "../media/imgproxy.ts";
 import { textToHtml } from "../content/sanitize.ts";
-import { exportTranslation, isChineseBody, ITEM_COLUMNS, ITEM_FROM, paperCitation, seatHolders, showsPost, toItemSummary, xView, type ItemRow } from "./items.ts";
+import { exportTranslation, isChineseBody, ITEM_COLUMNS, ITEM_FROM, metaOf, paperCitation, seatHolders, showsPost, toItemSummary, xView, type ItemRow } from "./items.ts";
 import { evidenceCondition, listedCondition } from "./scope.ts";
 import { itemUrl, siteUrl } from "./links.ts";
 import { hasItemPage, publicSourceName } from "./rules.ts";
@@ -207,7 +207,7 @@ export async function exportMarkdown(id: string): Promise<{ filename: string; bo
   const isPaper = row.category === "paper";
   if (row.reason && isPaper) lines.push("## 锐评", "", row.reason, "");
   else if (row.selected && row.seat && row.reason) lines.push(`## ${ITEM_COPY.reasonLabel}`, "", row.reason, "");
-  const citation = paperCitation(row);
+  const citation = paperCitation(row, metaOf(row));
   if (citation) lines.push("## 引用（APA）", "", citation, "");
   if (showsPost(row) && row.x_post) {
     const post = xView(row);

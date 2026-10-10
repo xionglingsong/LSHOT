@@ -26,11 +26,17 @@ export interface V1ItemsResult {
   page: { count: number; hasMore: boolean; nextCursor: string | null };
 }
 
+function metaOf(row: ApiItemRow) {
+  if (row.pm_venue == null && row.pm_authors == null && row.meta_title == null) return null;
+  return { authors: row.pm_authors, year: row.pm_year, title: row.meta_title, venue: row.pm_venue, volume: row.pm_volume, issue: row.pm_issue, pages: row.pm_pages };
+}
+
 export function rowToV1(row: ApiItemRow): V1ItemPayload {
   return v1Payload({
     articleId: row.id, title: row.title, originalTitle: row.original_title, summary: row.summary, sourceName: row.source_name,
     url: row.url, publishedAt: row.published_at, discoveredAt: row.discovered_at, category: row.category,
     score: row.score === null ? null : Number(row.score), selected: row.selected, reason: row.reason, author: row.author,
+    meta: metaOf(row),
   });
 }
 

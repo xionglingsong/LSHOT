@@ -1,6 +1,21 @@
 {
-  "latestVersion": "2026-10-10T21:00",
+  "latestVersion": "2026-10-10T22:30",
   "releases": [
+    {
+      "date": "2026-10-10",
+      "time": "22:30",
+      "kind": "更新",
+      "title": "论文引用升级：通过 DOI 自动补全期刊名、卷、期、页码",
+      "body": [
+        "昨天的更新之后，有读者发现部分论文的引用缺期刊名和卷期页码。原因找到了：这些信息来自订阅源自带的文字，很多学术期刊的订阅源根本不提供它们。",
+        "现在只要论文带 DOI 号，系统会自动向 CrossRef（国际 DOI 官方注册机构）查询这篇论文的完整元数据：全部作者的规范写法、期刊名、发表年份、卷、期、页码，然后生成一条真正能用的学术引用。",
+        "实际效果对比，同一篇论文：",
+        "- 之前：Liu, S., & Wang, W. (2026). Terminology translation in the generative AI era. https://doi.org/10.1075/term.26017.liu",
+        "- 现在：Liu, S., & Wang, W. (2026). Terminology translation in the generative AI era. Terminology. https://doi.org/10.1075/term.26017.liu",
+        "- 带卷期的论文（如《口译》期刊）：Fan, D. C. (2026). Audience feedback on platform-mediated simultaneous interpreting in a livestream chat. Interpreting, 28(2), 191-215. https://doi.org/10.1075/intp.00136.fan",
+        "现有的 34 篇带 DOI 的论文已全部回填完成，新论文入库时自动补全。没有 DOI 的论文（如部分公司博客的研究介绍）继续用上一版的规则：署名机构，附原文链接。"
+      ]
+    },
     {
       "date": "2026-10-10",
       "time": "21:00",

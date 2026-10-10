@@ -42,6 +42,14 @@ export interface ItemRow {
   zh_text: string | null;
   /** Chinese translation of the post an X post quotes. */
   quoted_zh: string | null;
+  /** Cached CrossRef metadata (papers): the citation prefers these over heuristics. */
+  pm_authors: string | null;
+  pm_year: number | null;
+  meta_title: string | null;
+  pm_venue: string | null;
+  pm_volume: string | null;
+  pm_issue: string | null;
+  pm_pages: string | null;
 }
 
 /** Columns every item listing selects. Internal judgement details never leave this layer. */
@@ -51,15 +59,20 @@ export const ITEM_COLUMNS = sql`
   p.body_mode, p.indexable, p.fact_id, s.name AS source_name, s.participation_mode AS source_mode,
   a.x_post, a.author, a.language,
   st.public_id::text AS story_public_id, st.title AS story_title,
-  CASE WHEN p.channel = 'x' THEN tr.body_text END AS zh_text, qt.text_zh AS quoted_zh`;
+  CASE WHEN p.channel = 'x' THEN tr.body_text END AS zh_text, qt.text_zh AS quoted_zh,
+  pm.authors AS pm_authors, pm.year AS pm_year, pm.meta_title, pm.venue AS pm_venue, pm.volume AS pm_volume,
+  pm.issue AS pm_issue, pm.pages AS pm_pages`;
 
 /** Public API listings never render article bodies, X media or story metadata. */
-export type ApiItemRow = Pick<ItemRow, "id" | "title" | "original_title" | "summary" | "source_name" | "url" | "published_at" | "discovered_at" | "category" | "score" | "selected" | "reason" | "author">;
+export type ApiItemRow = Pick<ItemRow, "id" | "title" | "original_title" | "summary" | "source_name" | "url" | "published_at" | "discovered_at" | "category" | "score" | "selected" | "reason" | "author" | "pm_authors" | "pm_year" | "meta_title" | "pm_venue" | "pm_volume" | "pm_issue" | "pm_pages">;
 /** `selected` is the machine meaning: the report holds its fact's selected seat (scope.ts seatedCondition). */
 export const API_ITEM_COLUMNS = sql`
   p.article_id AS id, p.title, p.original_title, p.summary, s.name AS source_name, p.url,
-  p.published_at, p.discovered_at, p.category, p.score, (p.selected AND p.seat) AS selected, p.reason, a.author`;
-export const API_ITEM_FROM = sql`FROM publications p JOIN sources s ON s.id = p.source_id JOIN articles a ON a.id = p.article_id`;
+  p.published_at, p.discovered_at, p.category, p.score, (p.selected AND p.seat) AS selected, p.reason, a.author,
+  pm.authors AS pm_authors, pm.year AS pm_year, pm.title AS meta_title, pm.venue AS pm_venue,
+  pm.volume AS pm_volume, pm.issue AS pm_issue, pm.pages AS pm_pages`;
+export const API_ITEM_FROM = sql`FROM publications p JOIN sources s ON s.id = p.source_id JOIN articles a ON a.id = p.article_id
+  LEFT JOIN paper_metadata pm ON pm.article_id = p.article_id`;
 
 /** A translation of an older revision is left out: the original changed after it (the worker translates it again). */
 export const ITEM_FROM = sql`
@@ -68,7 +81,9 @@ export const ITEM_FROM = sql`
   JOIN articles a ON a.id = p.article_id
   LEFT JOIN stories st ON st.id = p.story_id AND st.merged_into IS NULL
   LEFT JOIN translations tr ON tr.article_id = p.article_id AND tr.lang = 'zh' AND tr.revision >= a.revision
-  LEFT JOIN quote_translations qt ON p.channel = 'x' AND qt.tweet_id = substring(a.x_post->'quoted'->>'url' from '/status/([0-9]+)')`;
+  LEFT JOIN quote_translations qt ON p.channel = 'x' AND qt.tweet_id = substring(a.x_post->'quoted'->>'url' from '/status/([0-9]+)')
+  LEFT JOIN LATERAL (SELECT pm.authors, pm.year, pm.title AS meta_title, pm.venue, pm.volume, pm.issue, pm.pages
+                     FROM paper_metadata pm WHERE pm.article_id = p.article_id) pm ON p.category = 'paper'`;
 
 export function channelCondition(channel: ChannelKey | null | undefined) {
   if (!channel || channel === "all") return sql``;
@@ -202,19 +217,43 @@ function publisherOf(url: string): string | null {
   }
 }
 
-/** A deterministic strict APA citation for research papers: Surname, G. (Year). Title. Venue. URL. */
-export function paperCitation(row: ItemRow): string | null {
+/** The cached CrossRef metadata a citation prefers, read beside the item row. */
+export interface PaperMetaRow {
+  authors: string | null;
+  year: number | null;
+  title: string | null;
+  venue: string | null;
+  volume: string | null;
+  issue: string | null;
+  pages: string | null;
+}
+
+/**
+ * A strict APA citation for research papers, as complete as the record allows:
+ * "Surname, G. (2026). Title. Journal, 28(2), 248–281. https://doi.org/…" — the journal, volume,
+ * issue and pages come from the cached CrossRef metadata when it exists; otherwise the venue from a
+ * "[Journal]" title prefix and the bare URL stand in. Deterministic: same record, same citation.
+ */
+export function paperCitation(row: ItemRow, meta?: PaperMetaRow | null): string | null {
   if (row.category !== "paper") return null;
   const raw = (row.original_title ?? row.title ?? "").trim();
   if (!raw) return null;
-  const { title, venue } = splitVenue(raw);
+  const heurTitle = splitVenue(raw).title;
+  const title = (meta?.title ?? heurTitle ?? "").trim();
   if (!title) return null;
-  const year = row.published_at?.getUTCFullYear() ?? row.discovered_at.getUTCFullYear();
-  const byline = usableAuthors(row.author);
-  const author = byline ? apaAuthors(byline) : publisherOf(row.url ?? "");
-  const head = author ? `${author} (${year}). ${title}.` : `${title} (${year}).`;
-  const tail = [venue, (row.url ?? "").trim()].filter(Boolean).join(". ");
+  const year = meta?.year ?? row.published_at?.getUTCFullYear() ?? row.discovered_at.getUTCFullYear();
+  const authors = meta?.authors ?? (usableAuthors(row.author) ? apaAuthors(usableAuthors(row.author)!) : null) ?? publisherOf(row.url ?? "");
+  const head = authors ? `${authors} (${year}). ${title}.` : `${title} (${year}).`;
+  const venue = meta?.venue ?? splitVenue(raw).venue;
+  const vol = meta?.volume ? `${meta.volume}${meta.issue ? `(${meta.issue})` : ""}` : meta?.issue ? `(${meta.issue})` : null;
+  const source = venue ? [venue, vol, meta?.pages].filter(Boolean).join(", ") : null;
+  const tail = [source, (row.url ?? "").trim()].filter(Boolean).join(". ");
   return tail ? `${head} ${tail}` : head;
+}
+
+export function metaOf(row: ItemRow): PaperMetaRow | null {
+  if (row.pm_venue === null && row.pm_authors === null && row.meta_title === null) return null;
+  return { authors: row.pm_authors, year: row.pm_year, title: row.meta_title, venue: row.pm_venue, volume: row.pm_volume, issue: row.pm_issue, pages: row.pm_pages };
 }
 
 /** The shared public article; its X post is added as each answer shows it. */
@@ -225,7 +264,7 @@ export function toItemSummary(row: ItemRow): ItemSummary {
     originalTitle: row.original_title,
     summary: row.summary,
     reason: row.selected || row.category === "paper" ? row.reason : null,
-    citation: paperCitation(row),
+    citation: paperCitation(row, metaOf(row)),
     source: { name: publicSourceName(row.source_name) },
     links: { original: row.url },
     publishedAt: row.published_at?.toISOString() ?? null,

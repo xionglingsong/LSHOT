@@ -10,6 +10,7 @@ import type { XPostData } from "../content/materials.ts";
 import { originalPostCopy } from "../content/posts.ts";
 import { itemUrl } from "./links.ts";
 import { paperCitation } from "./items.ts";
+import { doiOf, paperMetadata } from "./crossref.ts";
 import { pickRepresentative, REPRESENTATIVE_COLUMNS, type RepresentativeIdentity } from "./representative.ts";
 import { enqueue, QUEUES, shutdownSignal } from "../jobs/queue.ts";
 import { emit } from "../modules.ts";
@@ -137,6 +138,7 @@ export function v1Payload(p: {
   articleId: string; title: string; originalTitle: string | null; summary: string | null; sourceName: string; url: string;
   publishedAt: Date | null; discoveredAt: Date; category: string | null; score: number | null; selected: boolean; reason: string | null;
   author?: string | null;
+  meta?: { authors: string | null; year: number | null; title: string | null; venue: string | null; volume: string | null; issue: string | null; pages: string | null } | null;
 }): V1ItemPayload {
   const aihot = itemUrl(p.articleId);
   const citation = paperCitation({
@@ -145,7 +147,8 @@ export function v1Payload(p: {
     published_at: p.publishedAt, discovered_at: p.discoveredAt, timeline_at: p.discoveredAt, visibility: "public",
     body_mode: "summary", indexable: true, fact_id: null, source_name: p.sourceName, x_post: null,
     author: p.author ?? null, language: null, story_public_id: null, story_title: null, zh_text: null, quoted_zh: null,
-  } as never);
+    pm_authors: null, pm_year: null, meta_title: null, pm_venue: null, pm_volume: null, pm_issue: null, pm_pages: null,
+  } as never, p.meta);
   return {
     id: p.articleId,
     title: p.title,
@@ -206,10 +209,15 @@ async function settleSeats(tx: Tx, factId: number | null, self: string | null, n
 async function syncLedger(tx: Tx, articleId: string, now: Date): Promise<"upsert" | "remove" | null> {
   const [p] = await tx<Array<{ selected: boolean; visibility: string; seat: boolean; title: string; original_title: string | null; summary: string | null;
     url: string; published_at: Date | null; discovered_at: Date; category: string | null; score: string | number | null; reason: string | null;
-    source_name: string; author: string | null }>>`
+    source_name: string; author: string | null;
+    pm_authors: string | null; pm_year: number | null; meta_title: string | null; pm_venue: string | null;
+    pm_volume: string | null; pm_issue: string | null; pm_pages: string | null }>>`
     SELECT p.selected, p.visibility, p.seat, p.title, p.original_title, p.summary, p.url, p.published_at, p.discovered_at, p.category,
-           p.score, p.reason, s.name AS source_name, a.author
+           p.score, p.reason, s.name AS source_name, a.author,
+           pm.authors AS pm_authors, pm.year AS pm_year, pm.title AS meta_title, pm.venue AS pm_venue,
+           pm.volume AS pm_volume, pm.issue AS pm_issue, pm.pages AS pm_pages
     FROM publications p JOIN sources s ON s.id = p.source_id JOIN articles a ON a.id = p.article_id
+    LEFT JOIN paper_metadata pm ON pm.article_id = p.article_id
     WHERE p.article_id = ${articleId}`;
   if (!p) return null;
   const [state] = await tx<{ in_set: boolean; payload_hash: string | null }[]>`SELECT in_set, payload_hash FROM selected_state WHERE article_id = ${articleId}`;
@@ -218,6 +226,9 @@ async function syncLedger(tx: Tx, articleId: string, now: Date): Promise<"upsert
       articleId, title: p.title, originalTitle: p.original_title, summary: p.summary, sourceName: p.source_name, url: p.url,
       publishedAt: p.published_at, discoveredAt: p.discovered_at, category: p.category, score: p.score === null ? null : Number(p.score), selected: true, reason: p.reason,
       author: p.author,
+      meta: p.pm_venue === null && p.pm_authors === null && p.meta_title === null ? null : {
+        authors: p.pm_authors, year: p.pm_year, title: p.meta_title, venue: p.pm_venue, volume: p.pm_volume, issue: p.pm_issue, pages: p.pm_pages,
+      },
     });
     const payloadHash = sha256(stableJson(payload));
     if (state?.in_set && state.payload_hash === payloadHash) return null;
@@ -233,7 +244,7 @@ async function syncLedger(tx: Tx, articleId: string, now: Date): Promise<"upsert
 }
 
 export async function publishArticle(articleId: string, options: PublishOptions = {}): Promise<PublishResult | null> {
-  return sql.begin(async (tx) => {
+  const result = await sql.begin(async (tx) => {
     await tx`SELECT 1 FROM articles WHERE id = ${articleId} FOR UPDATE`;
     const [previous] = await tx<{ story_id: number | null }[]>`SELECT story_id FROM publications WHERE article_id = ${articleId}`;
     const result = await publishArticleTx(tx, articleId, options);
@@ -243,6 +254,20 @@ export async function publishArticle(articleId: string, options: PublishOptions 
     }, tx);
     return result;
   });
+  // A paper's citation reads better with the journal, volume and pages CrossRef knows: one cached
+  // lookup per article, after the publication commit so a slow call never holds row locks.
+  if (result?.changed) {
+    const [row] = await sql<{ url: string; category: string | null; has_meta: boolean }[]>`
+      SELECT a.url, p.category, (pm.article_id IS NOT NULL) AS has_meta
+      FROM articles a JOIN publications p ON p.article_id = a.id
+      LEFT JOIN paper_metadata pm ON pm.article_id = a.id
+      WHERE a.id = ${articleId}`;
+    if (row?.category === "paper" && !row.has_meta) {
+      const doi = doiOf(row.url);
+      if (doi) await paperMetadata(articleId, doi).catch(() => null);
+    }
+  }
+  return result;
 }
 
 export async function publishArticleTx(tx: Tx, articleId: string, options: PublishOptions = {}): Promise<PublishResult | null> {
