@@ -295,6 +295,9 @@ const nextMonth = (label: string) => {
 export async function composeDueReports(now = new Date(), limit = 8): Promise<{ generated: string[]; failed: string[] }> {
   const generated: string[] = [];
   const failed: string[] = [];
+  // Dates before the first collected article cannot have judged content.
+  const [firstArticle] = await sql<{ at: Date | null }[]>`SELECT min(discovered_at) AS at FROM articles`;
+  const firstDate = firstArticle?.at ? beijingDate(firstArticle.at) : null;
   const kinds: Array<{ kind: ReportKind; due: string; next: (k: string) => string; compose: (k: string) => Promise<unknown> }> = [
     { kind: "daily", due: dueDaily(now), next: (k) => addDays(k, 1), compose: composeDaily },
     { kind: "weekly", due: dueWeekly(now), next: nextWeek, compose: composeWeekly },
@@ -302,8 +305,9 @@ export async function composeDueReports(now = new Date(), limit = 8): Promise<{ 
   ];
   kinds: for (const k of kinds) {
     const have = new Set((await sql<{ key: string }[]>`SELECT key FROM reports WHERE kind = ${k.kind}`).map((r) => r.key));
+    const earliest = firstDate ? k.kind === "daily" ? firstDate : k.kind === "weekly" ? isoWeekLabel(firstDate) : firstDate.slice(0, 7) : k.due;
     const first = [...have].sort()[0] ?? k.due;
-    for (let key = first; key <= k.due; key = k.next(key)) {
+    for (let key = first < earliest ? earliest : first; key <= k.due; key = k.next(key)) {
       if (have.has(key)) continue;
       if (shutdownSignal.signal.aborted || generated.length >= limit) break kinds;
       try {
